@@ -34,8 +34,10 @@ class Administracion_Model_DbTable_Tarjetones extends Db_Table
 		$tarjeton_mostrar_fotos = $data['tarjeton_mostrar_fotos'];
 		$tarjeton_descripcion = $data['tarjeton_descripcion'];
 		$tarjeton_titulo = $data['tarjeton_titulo'];
+		$tarjeton_voto_blanco = $data['tarjeton_voto_blanco'];
 
-		$query = "INSERT INTO tarjetones( tarjeton_estado, tarjeton_nombre, tarjeton_cantidad_votos, tarjeton_elecciones,tarjeton_zona, tarjeton_mostrar_detalle, tarjeton_mostrar_suplente,tarjeton_mostrar_fotos, tarjeton_descripcion, tarjeton_titulo) VALUES ( '$tarjeton_estado', '$tarjeton_nombre', '$tarjeton_cantidad_votos', '$tarjeton_elecciones', '$tarjeton_zona', '$tarjeton_mostrar_detalle', '$tarjeton_mostrar_suplente','$tarjeton_mostrar_fotos', '$tarjeton_descripcion', '$tarjeton_titulo')";
+
+		$query = "INSERT INTO tarjetones( tarjeton_estado, tarjeton_nombre, tarjeton_cantidad_votos, tarjeton_elecciones,tarjeton_zona, tarjeton_mostrar_detalle, tarjeton_mostrar_suplente,tarjeton_mostrar_fotos, tarjeton_descripcion, tarjeton_titulo, tarjeton_voto_blanco) VALUES ('$tarjeton_estado', '$tarjeton_nombre', '$tarjeton_cantidad_votos', '$tarjeton_elecciones', '$tarjeton_zona', '$tarjeton_mostrar_detalle', '$tarjeton_mostrar_suplente', '$tarjeton_mostrar_fotos', '$tarjeton_descripcion', '$tarjeton_titulo', '$tarjeton_voto_blanco')";
 		$res = $this->_conn->query($query);
 		return mysqli_insert_id($this->_conn->getConnection());
 	}
@@ -61,8 +63,10 @@ class Administracion_Model_DbTable_Tarjetones extends Db_Table
 
 		$tarjeton_descripcion = $data['tarjeton_descripcion'];
 		$tarjeton_titulo = $data['tarjeton_titulo'];
+		$tarjeton_voto_blanco = $data['tarjeton_voto_blanco'];
 
-		$query = "UPDATE tarjetones SET  tarjeton_estado = '$tarjeton_estado', tarjeton_nombre = '$tarjeton_nombre', tarjeton_cantidad_votos = '$tarjeton_cantidad_votos', tarjeton_elecciones = '$tarjeton_elecciones', tarjeton_zona = '$tarjeton_zona', tarjeton_mostrar_detalle = '$tarjeton_mostrar_detalle', tarjeton_mostrar_suplente = '$tarjeton_mostrar_suplente',tarjeton_mostrar_fotos = '$tarjeton_mostrar_fotos', tarjeton_descripcion = '$tarjeton_descripcion', tarjeton_titulo = '$tarjeton_titulo' WHERE tarjeton_id = '" . $id . "'";
+
+		$query = "UPDATE tarjetones SET  tarjeton_estado = '$tarjeton_estado', tarjeton_nombre = '$tarjeton_nombre', tarjeton_cantidad_votos = '$tarjeton_cantidad_votos', tarjeton_elecciones = '$tarjeton_elecciones', tarjeton_zona = '$tarjeton_zona', tarjeton_mostrar_detalle = '$tarjeton_mostrar_detalle', tarjeton_mostrar_suplente = '$tarjeton_mostrar_suplente',tarjeton_mostrar_fotos = '$tarjeton_mostrar_fotos', tarjeton_descripcion = '$tarjeton_descripcion', tarjeton_titulo = '$tarjeton_titulo', tarjeton_voto_blanco = '$tarjeton_voto_blanco' WHERE tarjeton_id = $id";
 		$res = $this->_conn->query($query);
 	}
 }

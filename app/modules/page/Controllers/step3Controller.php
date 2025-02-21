@@ -16,6 +16,8 @@ class Page_step3Controller extends Page_mainController
   }
   public function indexAction()
   {
+    
+
     // Verifica si ya votó el usuario
     $this->verifyResult();
 
@@ -25,13 +27,15 @@ class Page_step3Controller extends Page_mainController
     $zonas_model = new Administracion_Model_DbTable_Zonas();
 
     // Obtiene la configuración de votación por defecto
-    $configVotacion = $config_model->getById(1);
+    // $configVotacion = $config_model->getById(1);
 
-    // Obtiene la información del usuario desde la sesión
-    $user_info = Session::getInstance()->get('user');
+    $votacionActual = $this->getVotacion();
+    $configVotacion = $votacionActual['votacion'];
+
+   
 
     //traer ID de la zona que se llama todas
-    $zonaTodas = $zonas_model->getList("zona = 'TODAS'")[0];
+    // $zonaTodas = $zonas_model->getList("zona = 'TODAS'")[0];
     // Obtiene los tarjetones disponibles para el usuario en función de su zona
     $tarjetones = $tarjetones_model->getList(
       " tarjeton_elecciones = '$configVotacion->id' AND tarjeton_estado = '1' ",

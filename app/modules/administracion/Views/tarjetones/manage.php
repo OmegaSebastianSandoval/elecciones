@@ -77,6 +77,14 @@
 						} ?>>
 					<div class="help-block with-errors"></div>
 				</div>
+				<div class="col mb-3">
+					<label class="form-label">Con voto en blanco</label><br>
+					<input type="checkbox" name="tarjeton_voto_blanco" value="1" class="form-control switch-form "
+						<?php if ($this->getObjectVariable($this->content, 'tarjeton_voto_blanco') == 1) {
+							echo "checked";
+						} ?>>
+					<div class="help-block with-errors"></div>
+				</div>
 				<div class="col-12 d-none mb-3">
 					<label class="form-label">Vista de cuadrícula</label><br>
 					<input type="checkbox" name="tarjeton_mostrar_fotos" value="1" class="form-control switch-form "

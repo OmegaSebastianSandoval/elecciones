@@ -3,25 +3,33 @@
 
 	<div align="center">
 		<ul class="pagination justify-content-center">
-			<?php
-			$min = $this->page - 10;
-			$max = $this->page + 10;
+		<?php
+			$url = $this->route."/tarjetones";
+			$votacion = $this->votacion;
+			$tarjeton = $this->tarjeton;
+			$queryParams = "votacion={$votacion}";
+
+			$min = max(1, $this->page - 10); // Evita valores negativos o menores a 1
+			$max = min($this->totalpages, $this->page + 10); // No supera el total de páginas
 
 			if ($this->totalpages > 1) {
+				// Botón "Anterior"
 				if ($this->page != 1) {
-					echo '<li class="page-item" ><a class="page-link"  href="' . $url . '?page=' . ($this->page - 1) . '">&laquo; Anterior </a></li>';
+					echo '<li class="page-item"><a class="page-link" href="' . $url . '?page=' . ($this->page - 1) . '&' . $queryParams . '">&laquo; Anterior</a></li>';
 				}
-				for ($i = 1; $i <= $this->totalpages; $i++) {
+
+				// Iterar solo desde $min hasta $max
+				for ($i = $min; $i <= $max; $i++) {
 					if ($this->page == $i) {
 						echo '<li class="active page-item"><a class="page-link">' . $this->page . '</a></li>';
 					} else {
-						if ($i >= $min and $i <= $max) {
-							echo '<li class="page-item"><a class="page-link" href="' . $url . '?page=' . $i . '">' . $i . '</a></li>';
-						}
+						echo '<li class="page-item"><a class="page-link" href="' . $url . '?page=' . $i . '&' . $queryParams . '">' . $i . '</a></li>';
 					}
 				}
+
+				// Botón "Siguiente"
 				if ($this->page != $this->totalpages) {
-					echo '<li class="page-item"><a class="page-link" href="' . $url . '?page=' . ($this->page + 1) . '">Siguiente &raquo;</a></li>';
+					echo '<li class="page-item"><a class="page-link" href="' . $url . '?page=' . ($this->page + 1) . '&' . $queryParams . '">Siguiente &raquo;</a></li>';
 				}
 			}
 			?>
@@ -54,7 +62,7 @@
 					</select>
 				</div>
 				<div class="col-2 text-end">
-					<a class="btn btn-sm btn-success" href="<?php echo $this->route . "\manage" . "?eleccion=" . $this->eleccion . ""; ?>">
+					<a class="btn btn-sm btn-success d-none" href="<?php echo $this->route . "\manage" . "?eleccion=" . $this->eleccion . ""; ?>">
 						<i class="fas fa-plus-square"></i> Crear Nuevo
 					</a>
 				</div>
@@ -95,7 +103,7 @@
 							</td>
 							<td class="text-right">
 
-								<a class="btn btn-morado btn-sm my-1" href="<?php echo $this->route; ?>?votacion=<?= $this->votacion ?>&tarjeton=<?= $id?>" data-bs-toggle="tooltip" data-placement="top" title="Archivo de Delegados">
+								<a class="btn btn-morado btn-sm my-1" href="<?php echo $this->route; ?>?votacion=<?= $this->votacion ?>&tarjeton=<?= $id?>&page=1" data-bs-toggle="tooltip" data-placement="top" title="Archivo de Delegados">
 									Ver Candidatos
 									<!-- <i class="fa-solid fa-users-gear"></i> -->
 								</a>
@@ -110,19 +118,35 @@
 	</div>
 	<div align="center">
 		<ul class="pagination justify-content-center">
-			<?php
-			$url = $this->route;
+		<?php
+						$url = $this->route."/tarjetones";
+
+			$votacion = $this->votacion;
+
+			$queryParams = "votacion={$votacion}";
+
+			$min = max(1, $this->page - 10); // Evita valores negativos o menores a 1
+			$max = min($this->totalpages, $this->page + 10); // No supera el total de páginas
+
 			if ($this->totalpages > 1) {
-				if ($this->page != 1)
-					echo '<li class="page-item"><a class="page-link" href="' . $url . '?page=' . ($this->page - 1) . '&eleccion=' . $this->eleccion . '"> &laquo; Anterior </a></li>';
-				for ($i = 1; $i <= $this->totalpages; $i++) {
-					if ($this->page == $i)
-						echo '<li class="active page-item"><a class="page-link">' . $this->page . '</a></li>';
-					else
-						echo '<li class="page-item"><a class="page-link" href="' . $url . '?page=' . $i . '&eleccion=' . $this->eleccion . '">' . $i . '</a></li>  ';
+				// Botón "Anterior"
+				if ($this->page != 1) {
+					echo '<li class="page-item"><a class="page-link" href="' . $url . '?page=' . ($this->page - 1) . '&' . $queryParams . '">&laquo; Anterior</a></li>';
 				}
-				if ($this->page != $this->totalpages)
-					echo '<li class="page-item"><a class="page-link" href="' . $url . '?page=' . ($this->page + 1) . '&eleccion=' . $this->eleccion . '">Siguiente &raquo;</a></li>';
+
+				// Iterar solo desde $min hasta $max
+				for ($i = $min; $i <= $max; $i++) {
+					if ($this->page == $i) {
+						echo '<li class="active page-item"><a class="page-link">' . $this->page . '</a></li>';
+					} else {
+						echo '<li class="page-item"><a class="page-link" href="' . $url . '?page=' . $i . '&' . $queryParams . '">' . $i . '</a></li>';
+					}
+				}
+
+				// Botón "Siguiente"
+				if ($this->page != $this->totalpages) {
+					echo '<li class="page-item"><a class="page-link" href="' . $url . '?page=' . ($this->page + 1) . '&' . $queryParams . '">Siguiente &raquo;</a></li>';
+				}
 			}
 			?>
 		</ul>

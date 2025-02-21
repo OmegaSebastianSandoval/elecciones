@@ -59,7 +59,7 @@
 	</div>
 	<div class="content-dashboard">
 		<?php if ($this->votacion) { ?>
-			<a href="/administracion/zonas/elecciones" class="btn btn-success mb-3 d-flex align-items-center gap-2 w-fit"> <i class="fa-solid fa-arrow-left"></i> Volver</a>
+			<a href="/administracion/zonas/elecciones?page=1" class="btn btn-success mb-3 d-flex align-items-center gap-2 w-fit"> <i class="fa-solid fa-arrow-left"></i> Volver</a>
 		<?php } ?>
 		<div class="franja-paginas mb-3">
 			<div class="row">
@@ -86,7 +86,7 @@
 					</select>
 				</div>
 				<div class="col-3">
-					<div class="text-right"><a class="btn btn-sm btn-success" href="<?php echo $this->route . "\manage"; ?>"> <i class="fas fa-plus-square"></i> Crear Nuevo</a></div>
+					<div class="text-right"><a class="btn btn-sm btn-success" href="<?php echo $this->route . "\manage?votacion=".$this->votacion; ?>"> <i class="fas fa-plus-square"></i> Crear Nuevo</a></div>
 				</div>
 			</div>
 		</div>
@@ -108,7 +108,7 @@
 
 							<td class="text-right">
 								<div>
-									<a class="btn btn-azul btn-sm" href="<?php echo $this->route; ?>/manage?id=<?= $id ?>" data-bs-toggle="tooltip" data-placement="top" title="Editar"><i class="fas fa-pen-alt"></i></a>
+									<a class="btn btn-azul btn-sm" href="<?php echo $this->route; ?>/manage?id=<?= $id ?>&votacion=<?= $votacion ?>" data-bs-toggle="tooltip" data-placement="top" title="Editar"><i class="fas fa-pen-alt"></i></a>
 									<span data-bs-toggle="tooltip" data-placement="top" title="Eliminar"><a class="btn btn-rojo btn-sm" data-bs-toggle="modal" data-bs-target="#modal<?= $id ?>"><i class="fas fa-trash-alt"></i></a></span>
 								</div>
 								<!-- Modal -->
@@ -124,7 +124,7 @@
 											</div>
 											<div class="modal-footer">
 												<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-												<a class="btn btn-danger" href="<?php echo $this->route; ?>/delete?id=<?= $id ?>&csrf=<?= $this->csrf; ?><?php echo ''; ?>">Eliminar</a>
+												<a class="btn btn-danger" href="<?php echo $this->route; ?>/delete?id=<?= $id ?>&csrf=<?= $this->csrf; ?>&votacion=<?= $votacion ?><?php echo ''; ?>">Eliminar</a>
 											</div>
 										</div>
 									</div>

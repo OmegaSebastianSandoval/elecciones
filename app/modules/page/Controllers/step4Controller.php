@@ -23,14 +23,18 @@ class Page_step4Controller extends Page_mainController
 
     // Instancia de modelos necesarios
     $candidatos_model = new Administracion_Model_DbTable_Candidatos();
-    $config_model = new Administracion_Model_DbTable_Configvotacion();
+    // $config_model = new Administracion_Model_DbTable_Configvotacion();
     $zonasModel = new Administracion_Model_DbTable_Zonas();
 
     // Obtiene la información del usuario de la sesión
     $this->_view->user_info = $user_info = Session::getInstance()->get('user');
     $this->_view->tarjeton = $tarjeton = Session::getInstance()->get('tarjeton');
     $this->_view->list_zonas = $this->getZona();
-    $this->_view->config = $config_model->getById(1);
+    // $this->_view->config = $config_model->getById(1);
+    $votacionActual = $this->getVotacion();
+
+    $this->_view->config = $votacionActual['votacion'];
+
 
 
 
@@ -75,7 +79,7 @@ class Page_step4Controller extends Page_mainController
     // Verifica que no haya votado
     $this->verifyResult();
     $candidatos_model = new Administracion_Model_DbTable_Candidatos();
-    $config_model = new Administracion_Model_DbTable_Configvotacion();
+    // $config_model = new Administracion_Model_DbTable_Configvotacion();
     $zonasModel = new Administracion_Model_DbTable_Zonas();
     $tarjetones_model = new Administracion_Model_DbTable_Tarjetones();
 
@@ -85,7 +89,10 @@ class Page_step4Controller extends Page_mainController
     $tarjetonactual = Session::getInstance()->get('tarjetonactual');
     $resumen = Session::getInstance()->get('resumen');
     $this->_view->list_zonas = $this->getZona();
-    $this->_view->config = $config_model->getById(1);
+    // $this->_view->config = $config_model->getById(1);
+    $votacionActual = $this->getVotacion();
+
+    $this->_view->config = $votacionActual['votacion'];
 
 
 
@@ -131,6 +138,9 @@ class Page_step4Controller extends Page_mainController
     $resultados_model = new Administracion_Model_DbTable_Resultados();
     $candidatos_model = new Administracion_Model_DbTable_Candidatos();
     $tarjetones_model = new Administracion_Model_DbTable_Tarjetones();
+    $votacionActual = $this->getVotacion();
+
+    $votacionId = $votacionActual['votacion']->id;
 
 
 
@@ -150,6 +160,8 @@ class Page_step4Controller extends Page_mainController
 
           $data['candidato'] = $candidatoId;
           $data['tarjeton'] = $tarjetonId;
+          $data['votacion	'] = $votacionId;
+
 
           $data['usuario'] = Session::getInstance()->get('user')->id;
           $data['fecha'] = date('Y-m-d H:i:s');

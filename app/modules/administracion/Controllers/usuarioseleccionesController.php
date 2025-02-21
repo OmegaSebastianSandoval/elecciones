@@ -43,6 +43,8 @@ class Administracion_usuarioseleccionesController extends Administracion_mainCon
 	protected $namepages;
 
 	protected $namepageactual;
+	protected $votacion;
+
 
 
 
@@ -76,6 +78,10 @@ class Administracion_usuarioseleccionesController extends Administracion_mainCon
 		} else {
 			$this->pages = 20;
 		}
+		$votacion = $this->_getSanitizedParam("votacion");
+		$this->votacion = $votacion;
+		$this->_view->votacion = $votacion;
+
 		parent::init();
 	}
 
@@ -123,7 +129,7 @@ class Administracion_usuarioseleccionesController extends Administracion_mainCon
 		$this->_view->page = $page;
 		$this->_view->lists = $this->mainModel->getListPages($filters, $order, $start, $amount);
 		$this->_view->csrf_section = $this->_csrf_section;
-		$this->_view->list_zona = $this->getZona();
+		$this->_view->list_zona = $this->getZona($this->votacion);
 		$this->_view->list_estado = $this->getEstado();
 	}
 	public function eleccionesAction()
@@ -180,7 +186,7 @@ class Administracion_usuarioseleccionesController extends Administracion_mainCon
 		$this->_view->error = $this->_getSanitizedParam("error");
 
 		$this->_view->csrf = Session::getInstance()->get('csrf')[$this->_csrf_section];
-		$this->_view->list_zona = $this->getZona();
+		$this->_view->list_zona = $this->getZona($this->votacion);
 		$this->_view->list_estado = $this->getEstado();
 		$id = $this->_getSanitizedParam("id");
 		if ($id > 0) {
@@ -224,7 +230,7 @@ class Administracion_usuarioseleccionesController extends Administracion_mainCon
 			$logModel = new Administracion_Model_DbTable_Log();
 			$logModel->insert($data);
 		}
-		header('Location: ' . $this->route . '' . '');
+		header('Location: ' . $this->route . '?votacion=' . $this->votacion . '');
 	}
 
 	/**
@@ -242,11 +248,13 @@ class Administracion_usuarioseleccionesController extends Administracion_mainCon
 			if ($content->id) {
 				$data = $this->getData();
 
+				$data['votacion'] =  $this->_getSanitizedParam("votacion");
 
 				if ($content->estado == 1 && ($content->zona != $data["zona"])) {
 
 					$data["zona"] = $content->zona;
 					$data["estado"] = 1;
+					$data["votacion"] = $this->votacion;
 
 					$this->mainModel->update($data, $id);
 					$data['id'] = $id;
@@ -275,7 +283,7 @@ class Administracion_usuarioseleccionesController extends Administracion_mainCon
 					$data['log_tipo'] = 'EDITAR USUARIOS ELECCIONES';
 					$logModel = new Administracion_Model_DbTable_Log();
 					$logModel->insert($data);
-					header('Location: ' . $this->route . '' . '');
+					header('Location: ' . $this->route . '?votacion=' . $data['votacion'] . '');
 				}
 			}
 		}
@@ -304,16 +312,16 @@ class Administracion_usuarioseleccionesController extends Administracion_mainCon
 				}
 			}
 		}
-		header('Location: ' . $this->route . '' . '');
+		header('Location: ' . $this->route . '?votacion=' . $this->votacion . '');
 	}
 
 	public function exportarcambiosAction()
 	{
 		$this->setLayout('blanco');
 		$cambiosModel = new Administracion_Model_DbTable_Logcambios();
-		$this->_view->cambios = $cambiosModel->getList();
+		$this->_view->cambios = $cambiosModel->getList("votacion = " . $this->votacion, "");
 
-		$this->_view->list_zona = $this->getZona();
+		$this->_view->list_zona = $this->getZona($this->votacion);
 		$this->_view->list_usuarios = $this->getQuien();
 		$hoy = date("YmdHis");
 		$excel = $this->_getSanitizedParam("excel");
@@ -355,7 +363,11 @@ class Administracion_usuarioseleccionesController extends Administracion_mainCon
 		$this->_view->lists = $this->mainModel->getListPages($filters, $order, $start, $amount);
 		$this->_view->list = $list;
 		$this->_view->csrf_section = $this->_csrf_section;
-		$this->_view->list_zona = $this->getZona();
+		$this->_view->list_zona = $this->getZona($this->votacion);
+		print_r($this->_view->list_zona);
+		print_r($this->_view->list);
+
+		
 		$hoy = date("YmdHis");
 		$excel = $this->_getSanitizedParam("excel");
 
@@ -457,6 +469,7 @@ class Administracion_usuarioseleccionesController extends Administracion_mainCon
 		for ($i = $campoinicial; $i < $campofinal; $i++) {
 			$usuario = $usuarios[$i];
 			$clave = str_pad(rand(100000, 999999), 6, "0", STR_PAD_LEFT);
+			// $clave = 123456;
 			$claveHash = password_hash($clave, PASSWORD_DEFAULT);
 			$this->mainModel->editField($usuario->id, "clave", $claveHash);
 
@@ -492,7 +505,7 @@ class Administracion_usuarioseleccionesController extends Administracion_mainCon
 
 		$this->_view->lists = Session::getInstance()->get('usuariosUpdate');
 		$this->_view->csrf_section = $this->_csrf_section;
-		$this->_view->list_zona = $this->getZona();
+		$this->_view->list_zona = $this->getZona($this->votacion);
 		$hoy = date("YmdHis");
 		$excel = $this->_getSanitizedParam("excel");
 
@@ -532,6 +545,7 @@ class Administracion_usuarioseleccionesController extends Administracion_mainCon
 		$data['nombre'] = $this->_getSanitizedParam("nombre");
 		$data['correo'] = $this->_getSanitizedParam("correo");
 		$data['celular'] = $this->_getSanitizedParam("celular");
+		$data['votacion'] = $this->_getSanitizedParam("votacion");
 		if ($this->_getSanitizedParam("zona") == '') {
 			$data['zona'] = '0';
 		} else {
@@ -553,10 +567,10 @@ class Administracion_usuarioseleccionesController extends Administracion_mainCon
 	 *
 	 * @return array cadena con los valores del campo Zona.
 	 */
-	private function getZona()
+	private function getZona($votacion)
 	{
 		$modelData = new Administracion_Model_DbTable_Zonas();
-		$data = $modelData->getList();
+		$data = $modelData->getList("votacion = " . $votacion);
 		$array = array();
 		foreach ($data as $key => $value) {
 			$array[$value->id] = $value->zona;

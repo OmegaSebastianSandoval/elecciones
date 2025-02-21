@@ -2,11 +2,13 @@
 <div class="container-fluid">
 	<form class="text-left" enctype="multipart/form-data" method="post" action="<?php echo $this->routeform; ?>" data-bs-toggle="validator">
 		<div class="content-dashboard">
+		<input type="hidden" name="votacion" id="votacion" value="<?php echo $this->votacion ?>">
 			<input type="hidden" name="csrf" id="csrf" value="<?php echo $this->csrf ?>">
 			<input type="hidden" name="csrf_section" id="csrf_section" value="<?php echo $this->csrf_section ?>">
 			<?php if ($this->content->id) { ?>
 				<input type="hidden" name="id" id="id" value="<?= $this->content->id; ?>" />
 			<?php } ?>
+			<input type="hidden" name="votacion" id="votacion" value="<?= $this->votacion ?>" />
 			<div class="row">
 				<div class="col-3 mb-3">
 					<label for="cedula" class="form-label">Cedula</label>
@@ -80,7 +82,7 @@
 		</div>
 		<div class="botones-acciones">
 			<button class="btn btn-guardar" type="submit">Guardar</button>
-			<a href="<?php echo $this->route; ?>" class="btn btn-cancelar">Cancelar</a>
+			<a href="<?php echo $this->route; ?>?votacion=<?php echo $this->votacion?>" class="btn btn-cancelar">Cancelar</a>
 		</div>
 	</form>
 </div>

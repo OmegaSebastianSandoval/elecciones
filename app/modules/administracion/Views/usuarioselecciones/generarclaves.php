@@ -16,7 +16,7 @@
 				<?php if (!$this->mostrar) { ?>
 					<button type="submit" id="btn-submit" class="btn btn-danger">Generar</button>
 				<?php } else { ?>
-					<a href="/administracion/usuarioselecciones/exportarclaves?excel=1" target="_blank" class="btn btn-success ">Descargar Excel</a>
+					<a href="/administracion/usuarioselecciones/exportarclaves?excel=1&votacion=<?php echo $this->votacion; ?>" target="_blank" class="btn btn-success ">Descargar Excel</a>
 				<?php } ?>
 			</div>
 		</div>

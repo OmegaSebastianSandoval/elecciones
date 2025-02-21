@@ -385,7 +385,7 @@ class Administracion_configvotacionController extends Administracion_mainControl
     }
     // $zonasModel->deleteAll();
 
-    $zonas = $this->getZonasByName();
+    // $zonas = $this->getZonasByName($votacion);
 
 
     for ($i = 0; $i <= count($infoexel); $i++) {
@@ -436,7 +436,7 @@ class Administracion_configvotacionController extends Administracion_mainControl
     $candidatos_model = new Administracion_Model_DbTable_Candidatos();
     // $candidatos_model->deleteAll();
 
-    $zonas = $this->getZonasByName();
+    $zonas = $this->getZonasByName($votacion);
 
 
     for ($i = 0; $i <= count($infoexel); $i++) {
@@ -563,7 +563,7 @@ class Administracion_configvotacionController extends Administracion_mainControl
     $this->_view->campoinicial = $campoinicial;
     $this->_view->campofinal = $campofinal;
 
-    $zonas = $this->getZonasByName();
+    $zonas = $this->getZonasByName($votacion);
     $usuariosModel = new Administracion_Model_DbTable_Usuarioselecciones();
     echo "campoinicial: $campoinicial, campofinal: $campofinal, total: $total <br>";
 
@@ -703,7 +703,7 @@ class Administracion_configvotacionController extends Administracion_mainControl
     $usuariosModel = new Administracion_Model_DbTable_Usuarioselecciones();
     $usuariosModel->deleteAll();
 
-    $zonas = $this->getZonasByName();
+    // $zonas = $this->getZonasByName();
 
     foreach ($infoExcel as $fila) {
       $cedula = $this->cleanField($fila['A']);
@@ -783,10 +783,10 @@ class Administracion_configvotacionController extends Administracion_mainControl
     return $password;
   }
 
-  function getZonasByName()
+  function getZonasByName($votacion)
   {
     $zonasModel = new Administracion_Model_DbTable_Zonas();
-    $zonas = $zonasModel->getList("");
+    $zonas = $zonasModel->getList("votacion = '$votacion'");
     $zonasArray = array();
     foreach ($zonas as $zona) {
       $zonasArray[$zona->zona] = $zona->id;

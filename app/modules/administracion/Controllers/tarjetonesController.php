@@ -44,6 +44,9 @@ class Administracion_tarjetonesController extends Administracion_mainController
 	 */
 	protected $namepages;
 
+	protected $namepageactual;
+	protected $votacion;
+	protected $tarjeton;
 
 
 	/**
@@ -64,6 +67,12 @@ class Administracion_tarjetonesController extends Administracion_mainController
 		} else {
 			$this->pages = 20;
 		}
+		$votacion = $this->_getSanitizedParam("votacion");
+		$this->votacion = $votacion;
+		$this->_view->votacion = $votacion;
+		$tarjeton = $this->_getSanitizedParam("tarjeton");
+		$this->tarjeton = $tarjeton;
+		$this->_view->tarjeton = $tarjeton;
 		parent::init();
 	}
 
@@ -161,7 +170,11 @@ class Administracion_tarjetonesController extends Administracion_mainController
 		$csrf = $this->_getSanitizedParam("csrf");
 		if (Session::getInstance()->get('csrf')[$this->_getSanitizedParam("csrf_section")] == $csrf) {
 			$data = $this->getData();
+
 			$id = $this->mainModel->insert($data);
+			if ($data["tarjeton_voto_blanco"] == 1) {
+				$this->crearVotosBlanco($data["tarjeton_elecciones"], $id, $data["tarjeton_zona"]);
+			}
 			$this->mainModel->changeOrder($id, $id);
 			$data['tarjeton_id'] = $id;
 			$data['log_log'] = print_r($data, true);
@@ -187,7 +200,22 @@ class Administracion_tarjetonesController extends Administracion_mainController
 			$content = $this->mainModel->getById($id);
 			if ($content->tarjeton_id) {
 				$data = $this->getData();
+
 				$this->mainModel->update($data, $id);
+				if (
+					($data["tarjeton_voto_blanco"] == 1 &&
+						$content->tarjeton_voto_blanco == 0) ||
+					($data["tarjeton_zona"] !=	$content->tarjeton_zona)
+				) {
+					$this->crearVotosBlanco($data["tarjeton_elecciones"], $id, $data["tarjeton_zona"]);
+				}
+
+				if (
+					$data["tarjeton_voto_blanco"] == 0 &&
+					$content->tarjeton_voto_blanco == 1
+				) {
+					$this->deleteVotosBlanco($data["tarjeton_elecciones"], $id);
+				}
 			}
 			$data['tarjeton_id'] = $id;
 			$data['log_log'] = print_r($data, true);
@@ -227,6 +255,67 @@ class Administracion_tarjetonesController extends Administracion_mainController
 	}
 
 
+	public function crearVotosBlanco($votacion, $tarjeton, $filtroZona)
+	{
+		$this->deleteVotosBlanco($votacion, $tarjeton);
+		$candidatosModel = new Administracion_Model_DbTable_Candidatos();
+		$zonasModel = new Administracion_Model_DbTable_Zonas();
+		$zonas = $zonasModel->getList("votacion = '$votacion'", "");
+
+		$candidatos = $candidatosModel->getList("candidato_tarjeton = '$tarjeton' AND votacion = '$votacion'", "");
+
+		$numerosCandidatos = [];
+		foreach ($candidatos as $candidato) {
+			$numerosCandidatos[] = $candidato->numero;
+		}
+
+		$numeroParaVotoBlanco = $numeroParaVotoBlanco = (empty($numerosCandidatos)) ? 1 : (max($numerosCandidatos) + 1);
+
+		switch ($filtroZona) {
+			case '1':
+				foreach ($zonas as $zona) {
+					$data['numero'] = $numeroParaVotoBlanco;
+					$data['nombre'] = 'VOTO EN BLANCO';
+					$data['suplente'] = '';
+					$data['zona'] = $zona->id;
+					$data['detalle'] = 'VOTO EN BLANCO';
+					$data['candidato_tarjeton'] = $tarjeton;
+					$data['votacion'] = $votacion;
+					$data['cedula'] = '';
+					$data['foto'] = '';
+					$data['lista'] = '';
+					$candidatosModel->insert($data);
+					$numeroParaVotoBlanco++;
+				}
+				break;
+
+			case '0':
+				$data['numero'] = $numeroParaVotoBlanco;
+				$data['nombre'] = 'VOTO EN BLANCO';
+				$data['suplente'] = '';
+				$data['zona'] = 0;
+				$data['detalle'] = 'VOTO EN BLANCO';
+				$data['candidato_tarjeton'] = $tarjeton;
+				$data['votacion'] = $votacion;
+				$data['cedula'] = '';
+				$data['foto'] = '';
+				$data['lista'] = '';
+				$candidatosModel->insert($data);
+				break;
+		}
+	}
+
+
+	public function deleteVotosBlanco($votacion, $tarjeton)
+	{
+		$candidatosModel = new Administracion_Model_DbTable_Candidatos();
+		$candidatos = $candidatosModel->getList("candidato_tarjeton = '$tarjeton' AND votacion = '$votacion'", "");
+		foreach ($candidatos as $candidato) {
+			if ($candidato->nombre == 'VOTO EN BLANCO') {
+				$candidatosModel->deleteRegister($candidato->id);
+			}
+		}
+	}
 	public function editardelegadosAction()
 	{
 		$title = "Lista de Delegados";
@@ -239,11 +328,14 @@ class Administracion_tarjetonesController extends Administracion_mainController
 	public function updatedelegadosAction()
 	{
 		$uploadDocument =  new Core_Model_Upload_Document();
+		$tarjetonModel = new Administracion_Model_DbTable_Tarjetones();
 		if ($_FILES['archivo']['name'] != '') {
 			$archivo = $uploadDocument->upload("archivo");
 		}
 		$votacion = $this->_getSanitizedParam("votacion");
 		$tarjeton = $this->_getSanitizedParam("tarjeton");
+
+		$tarjetonInfo = $tarjetonModel->getById($tarjeton);
 
 		$inputFileName = FILE_PATH . $archivo;
 		$spreadsheet = IOFactory::load($inputFileName);
@@ -258,7 +350,7 @@ class Administracion_tarjetonesController extends Administracion_mainController
 		}
 		// $candidatos_model->deleteAll();
 
-		$zonas = $this->getZonasByName();
+		$zonas = $this->getZonasByName($this->votacion);
 
 
 		for ($i = 0; $i <= count($infoexel); $i++) {
@@ -280,7 +372,7 @@ class Administracion_tarjetonesController extends Administracion_mainController
 				Session::getInstance()->set("votacion_actual_tipo", "danger");
 				Session::getInstance()->set("votacion_actual_error", "Error al actualizar los candidatos.");
 				header('Location: /administracion/tarjetones/index/?eleccion=' . $votacion);
-			} 
+			}
 			if (
 				$data['numero'] != '' &&
 				$data['nombre'] != '' &&
@@ -290,7 +382,9 @@ class Administracion_tarjetonesController extends Administracion_mainController
 				$insert_id = $candidatos_model->insert($data);
 			}
 		}
+
 		if ($insert_id) {
+			$this->crearVotosBlanco($votacion, $tarjeton, $tarjetonInfo->tarjeton_zona);
 			Session::getInstance()->set("votacion_actual_tipo", "success");
 			Session::getInstance()->set("votacion_actual_error", "Candidatos actualizados correctamente.");
 			header('Location: /administracion/tarjetones/index/?eleccion=' . $votacion);
@@ -360,6 +454,11 @@ class Administracion_tarjetonesController extends Administracion_mainController
 			$data['tarjeton_zona'] = $this->_getSanitizedParam("tarjeton_zona");
 		}
 
+		if ($this->_getSanitizedParam("tarjeton_voto_blanco") == '') {
+			$data['tarjeton_voto_blanco'] = '0';
+		} else {
+			$data['tarjeton_voto_blanco'] = $this->_getSanitizedParam("tarjeton_voto_blanco");
+		}
 		$data['tarjeton_descripcion'] = $this->_getSanitizedParamHtml("tarjeton_descripcion");
 		$data['tarjeton_titulo'] = $this->_getSanitizedParam("tarjeton_titulo");
 
@@ -430,10 +529,10 @@ class Administracion_tarjetonesController extends Administracion_mainController
 		return $password;
 	}
 
-	function getZonasByName()
+	function getZonasByName($votacion)
 	{
 		$zonasModel = new Administracion_Model_DbTable_Zonas();
-		$zonas = $zonasModel->getList("");
+		$zonas = $zonasModel->getList("votacion = '$votacion'", "");
 		$zonasArray = array();
 		foreach ($zonas as $zona) {
 			$zonasArray[$zona->zona] = $zona->id;

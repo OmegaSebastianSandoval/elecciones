@@ -118,9 +118,7 @@
 					</select>
 				</div>
 				<div class="col-2 text-end">
-					<a class="btn btn-sm btn-success" href="<?php echo $this->route . "\manage"; ?><?php if ($this->padre) {
-																																														echo "?padre=" . $this->padre;
-																																													} ?>">
+					<a class="btn btn-sm btn-success" href="<?php echo $this->route . "\manage?votacion=" . $this->votacion . "&tarjeton=" . $this->tarjeton; ?>">
 						<i class="fas fa-plus-square"></i> Crear Nuevo
 					</a>
 				</div>
@@ -132,7 +130,7 @@
 					<tr>
 						<td>Numero</td>
 						<td>Nombre</td>
-						<td>Cargo</td>
+						<td>Detalle</td>
 						<td>Tarjetón</td>
 						<td>Zona</td>
 						<td>Foto</td>
@@ -157,7 +155,7 @@
 							</td>
 							<td class="text-right">
 								<div>
-									<a class="btn btn-azul btn-sm" href="<?php echo $this->route; ?>/manage?id=<?= $id ?>" data-bs-toggle="tooltip" data-placement="top" title="Editar"><i class="fas fa-pen-alt"></i></a>
+									<a class="btn btn-azul btn-sm" href="<?php echo $this->route; ?>/manage?id=<?= $id ?>&votacion=<?= $this->votacion ?>&tarjeton=<?= $this->tarjeton; ?>"><i class="fas fa-pencil-alt"></i></a>
 									<span data-bs-toggle="tooltip" data-placement="top" title="Eliminar"><a class="btn btn-rojo btn-sm" data-bs-toggle="modal" data-bs-target="#modal<?= $id ?>"><i class="fas fa-trash-alt"></i></a></span>
 								</div>
 								<!-- Modal -->
@@ -173,7 +171,7 @@
 											</div>
 											<div class="modal-footer">
 												<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-												<a class="btn btn-danger" href="<?php echo $this->route; ?>/delete?id=<?= $id ?>&csrf=<?= $this->csrf; ?><?php echo ''; ?>">Eliminar</a>
+												<a class="btn btn-danger" href="<?php echo $this->route; ?>/delete?id=<?= $id ?>&csrf=<?= $this->csrf; ?>&votacion=<?= $this->votacion ?>&tarjeton=<?= $this->tarjeton; ?>">Eliminar</a>
 											</div>
 										</div>
 									</div>

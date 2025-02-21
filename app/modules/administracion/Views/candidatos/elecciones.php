@@ -62,7 +62,7 @@
               <td><?= $content->fecha_inicio; ?></td>
               <td><?= $content->fecha_final; ?></td>
               <td class=" d-flex text-right">
-                <a class="btn btn-azul btn-sm my-1" href="<?php echo $this->route; ?>/tarjetones?votacion=<?= $id ?>" data-bs-toggle="tooltip" data-placement="top" title="Editar">
+                <a class="btn btn-azul btn-sm my-1" href="<?php echo $this->route; ?>/tarjetones?votacion=<?= $id ?>&page=1" data-bs-toggle="tooltip" data-placement="top" title="Editar">
                   Ver Tarjetones
                   <!-- <i class="fas fa-pen-alt"></i> -->
                 </a>

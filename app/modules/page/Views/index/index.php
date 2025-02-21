@@ -1,37 +1,47 @@
 <div class="bx-general bx-login">
   <div class="row mx-0">
     <div class="col-md-6 login-bg">
-      <img src="/images/<?= $this->login->config_login_imagen?>" alt="Imagen Home">
+      <img src="/images/<?= $this->login->config_login_imagen ?>" alt="Imagen Home">
     </div>
     <div class="col-md-6">
       <div class="row w-100 text-center justify-content-center h-100 mx-auto">
         <div class="col-lg-9 col-md-10 col-12 d-flex justify-content-center align-items-center">
           <div class="row">
             <div class="col-12">
-              <img src="/images/<?= $this->infopage->info_logo_grande?>" alt="logo" class="logo">
+              <img src="/images/<?= $this->infopage->info_logo_grande ?>" alt="logo" class="logo">
             </div>
             <div class="col-12">
-              <h3 class="login-title"><?= $this->login->config_login_titulo?></h3>
+              <h3 class="login-title"><?= $this->login->config_login_titulo ?></h3>
             </div>
             <div class="col-lg-10 col-md-12 mx-auto">
-            <?= $this->login->config_login_subtitulo	?>
+              <?= $this->login->config_login_subtitulo  ?>
             </div>
 
             <div class="col-xxl-6 col-lg-8 col-9 mt-2 mx-auto">
-              <?php if($this->votacion){?>
-              <form action="/page/index/login" class="row" method="post" id="loginForm">
-                <label for="user" class="text-start p-0">Identificación</label>
-                <input type="text" class="form-control mb-3" id="user" name="user" placeholder="Ej 9100000" onkeypress="return soloNumerosYGuion(event)" required>
-                <label for="pass" class="text-start p-0">Contraseña</label>
-                <input type="password" class="form-control mb-3" id="pass" name="pass" placeholder="*****"   required>
-        
-                <button class="button mx-auto" type="submit">INGRESAR</button>
-              </form>
-              <?php }else{?>
-                <div class="alert alert-danger text-center">
-                  <strong>Sin votaciones activas.</strong>
-                </div>
-              <?php }?>
+              <?php if ($this->votacion["votacion"] && $this->votacion["tarjetones"]) { ?>
+                <form action="/page/index/login" class="row" method="post" id="loginForm">
+                  <label for="user" class="text-start p-0">Identificación</label>
+                  <input type="text" class="form-control mb-3" id="user" name="user" placeholder="Ej 9100000" onkeypress="return soloNumerosYGuion(event)" required>
+                  <label for="pass" class="text-start p-0">Contraseña</label>
+                  <input type="password" class="form-control mb-3" id="pass" name="pass" placeholder="*****" required>
+                  <input type="hidden" name="votacion" value="<?= $this->votacion["votacion"]->id ?>">
+
+                  <button class="button mx-auto" type="submit">INGRESAR</button>
+                </form>
+              <?php } else { ?>
+                <?php if (!$this->votacion["votacion"]) { ?>
+                  <div class="alert alert-danger text-center">
+                    <strong>Sin votaciones activas.</strong>
+                  </div>
+                <?php } ?>
+
+                <?php if (!$this->votacion["tarjetones"]) { ?>
+                  <div class="alert alert-danger text-center">
+                    <strong>Sin tarjetones activos.</strong>
+                  </div>
+                <?php } ?>
+
+              <?php } ?>
             </div>
           </div>
         </div>

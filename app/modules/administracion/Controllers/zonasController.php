@@ -42,6 +42,8 @@ class Administracion_zonasController extends Administracion_mainController
 	 */
 	protected $namepages;
 
+	protected $namepageactual;
+	protected $votacion;
 
 
 	/**
@@ -62,6 +64,10 @@ class Administracion_zonasController extends Administracion_mainController
 		} else {
 			$this->pages = 20;
 		}
+		$votacion = $this->_getSanitizedParam("votacion");
+		$this->votacion = $votacion;
+		$this->_view->votacion = $votacion;
+
 		parent::init();
 	}
 
@@ -74,7 +80,7 @@ class Administracion_zonasController extends Administracion_mainController
 	public function indexAction()
 	{
 		$votacion = $this->_getSanitizedParam("votacion");
-		if(!$votacion){
+		if (!$votacion) {
 			header('Location: /administracion/zonas/elecciones');
 		}
 		$this->_view->votacion = $votacion;
@@ -113,13 +119,13 @@ class Administracion_zonasController extends Administracion_mainController
 	public function eleccionesAction()
 	{
 		$eleccionesModel = new Administracion_Model_DbTable_Configvotacion();
-	
-	
+
+
 
 		$title = "Listado de elecciones";
 		$this->getLayout()->setTitle($title);
 		$this->_view->titlesection = $title;
-		
+
 		$filters = "";
 		$this->_view->filters = $filters;
 		$filters = $this->getFilter();
@@ -161,6 +167,7 @@ class Administracion_zonasController extends Administracion_mainController
 		$this->_view->csrf_section = $this->_csrf_section;
 		$this->_view->csrf = Session::getInstance()->get('csrf')[$this->_csrf_section];
 		$id = $this->_getSanitizedParam("id");
+
 		if ($id > 0) {
 			$content = $this->mainModel->getById($id);
 			if ($content->id) {
@@ -202,7 +209,7 @@ class Administracion_zonasController extends Administracion_mainController
 			$logModel = new Administracion_Model_DbTable_Log();
 			$logModel->insert($data);
 		}
-		header('Location: ' . $this->route . '' . '');
+		header('Location: ' . $this->route . '?votacion=' . $this->votacion . '');
 	}
 
 	/**
@@ -217,8 +224,11 @@ class Administracion_zonasController extends Administracion_mainController
 		if (Session::getInstance()->get('csrf')[$this->_getSanitizedParam("csrf_section")] == $csrf) {
 			$id = $this->_getSanitizedParam("id");
 			$content = $this->mainModel->getById($id);
+
 			if ($content->id) {
 				$data = $this->getData();
+				$data['votacion'] =  $this->_getSanitizedParam("votacion");
+
 				$this->mainModel->update($data, $id);
 			}
 			$data['id'] = $id;
@@ -227,7 +237,7 @@ class Administracion_zonasController extends Administracion_mainController
 			$logModel = new Administracion_Model_DbTable_Log();
 			$logModel->insert($data);
 		}
-		header('Location: ' . $this->route . '' . '');
+		header('Location: ' . $this->route . '?votacion=' . $data['votacion'] . '');
 	}
 
 	/**
@@ -265,6 +275,8 @@ class Administracion_zonasController extends Administracion_mainController
 	{
 		$data = array();
 		$data['zona'] = $this->_getSanitizedParam("zona");
+		$data['votacion'] = $this->_getSanitizedParam("votacion");
+
 		if ($this->_getSanitizedParam("elegidos") == '') {
 			$data['elegidos'] = '0';
 		} else {

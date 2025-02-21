@@ -66,7 +66,9 @@ class Page_mainController extends Controllers_Abstract
 			header("Location: /");
 		}
 		// Consultar si las votaciones están abiertas
-		$votacion = $this->getVotacion();
+		// $votacion = $this->getVotacion();
+		$votacionActual = $this->getVotacion();
+    $votacion = $votacionActual['votacion'];
 		$fechaActual = date('Y-m-d H:i:s');
 
 		// Verificar si la votación está cerrada (fecha actual es anterior a la fecha de inicio)
@@ -86,8 +88,14 @@ class Page_mainController extends Controllers_Abstract
 	public function getVotacion()
 	{
 		$configVotacionModel = new Administracion_Model_DbTable_Configvotacion();
-
-		return $configVotacionModel->getList("votacion_actual = 1", "")[0];
+		$tarjetonesModel = new Administracion_Model_DbTable_Tarjetones();
+		$votacionActual = $configVotacionModel->getList("votacion_actual = 1", "")[0];
+		$tarjetones = $tarjetonesModel->getList("tarjeton_elecciones = '$votacionActual->id' AND tarjeton_estado= '1'", "");
+		$result = [
+			'votacion' => $votacionActual,
+			'tarjetones' => $tarjetones
+		];
+		return $result;
 	}
 	/**
 	 * Genera los valores del campo Zona.

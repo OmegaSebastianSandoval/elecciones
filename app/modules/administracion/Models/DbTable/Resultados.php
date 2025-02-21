@@ -34,8 +34,9 @@ class Administracion_Model_DbTable_Resultados extends Db_Table
 		$tarjeton = $data['tarjeton'];
 
 		$consecutivo = $data['consecutivo'];
+		$votacion = $data['votacion'];
 
-		$query = "INSERT INTO resultados( candidato, usuario, fecha, opinion, ip, isp, zona, tarjeton, consecutivo) VALUES ( '$candidato', '$usuario', '$fecha', '$opinion', '$ip', '$isp', '$zona','$tarjeton', '$consecutivo')";
+		$query = "INSERT INTO resultados( candidato, usuario, fecha, opinion, ip, isp, zona, tarjeton, consecutivo, votacion) VALUES ( '$candidato', '$usuario', '$fecha', '$opinion', '$ip', '$isp', '$zona', '$tarjeton', '$consecutivo', '$votacion')";
 		$res = $this->_conn->query($query);
 		return mysqli_insert_id($this->_conn->getConnection());
 	}
@@ -58,8 +59,10 @@ class Administracion_Model_DbTable_Resultados extends Db_Table
 		$zona = $data['zona'];
 		$tarjeton = $data['tarjeton'];
 		$consecutivo = $data['consecutivo'];
+		$votacion = $data['votacion'];
 
-		$query = "UPDATE resultados SET  candidato = '$candidato', usuario = '$usuario', fecha = '$fecha', opinion = '$opinion', ip = '$ip', isp = '$isp', zona = '$zona' , tarjeton = '$tarjeton' , consecutivo = '$consecutivo' WHERE id = '" . $id . "'";
+
+		$query = "UPDATE resultados SET  candidato = '$candidato', usuario = '$usuario', fecha = '$fecha', opinion = '$opinion', ip = '$ip', isp = '$isp', zona = '$zona' , tarjeton = '$tarjeton' , consecutivo = '$consecutivo' , votacion = '$votacion' WHERE id = $id";
 		$res = $this->_conn->query($query);
 	}
 

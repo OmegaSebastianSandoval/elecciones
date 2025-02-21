@@ -17,15 +17,19 @@
     </span>
     <div class="info-text mt-3">
       <?php
-      $cantidadMaxima = $this->cantidadMaximaVotos;
-      $cantidadCandidatos = count($this->candidatos) - 1;
+     
 
-      if ($cantidadMaxima != $cantidadCandidatos) {
-        $cantidadMaxima = $cantidadCandidatos;
-      } else {
-        $cantidadMaxima = $this->cantidadMaximaVotos;
-      }
-
+     $cantidadMaxima = $this->cantidadMaximaVotos;
+     $cantidadCandidatos = count($this->candidatos);
+     
+     if ($cantidadMaxima > $cantidadCandidatos) {
+         $cantidadMaxima = $cantidadCandidatos;
+     
+         if ($this->tarjeton->tarjeton_voto_blanco == 1) {
+             $cantidadMaxima--;
+         }
+     }
+     
       ?>
       <?php if ($this->tarjeton->tarjeton_zona == 1) { ?>
         <div class="text-gray mt-2">

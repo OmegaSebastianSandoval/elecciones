@@ -1,7 +1,8 @@
-<?php 
+<?php
+
 /**
-* clase que genera la insercion y edicion  de logcambios en la base de datos
-*/
+ * clase que genera la insercion y edicion  de logcambios en la base de datos
+ */
 class Administracion_Model_DbTable_Logcambios extends Db_Table
 {
 	/**
@@ -21,15 +22,17 @@ class Administracion_Model_DbTable_Logcambios extends Db_Table
 	 * @param  array Array array con la informacion con la cual se va a realizar la insercion en la base de datos
 	 * @return integer      identificador del  registro que se inserto
 	 */
-	public function insert($data){
+	public function insert($data)
+	{
 		$cedula = $data['cedula'];
 		$valor_anterior = $data['valor_anterior'];
 		$valor_nuevo = $data['valor_nuevo'];
 		$fecha = $data['fecha'];
 		$quien = $data['quien'];
-		$query = "INSERT INTO log_cambios( cedula, valor_anterior, valor_nuevo, fecha, quien) VALUES ( '$cedula', '$valor_anterior', '$valor_nuevo', '$fecha', '$quien')";
+		$votacion = $data['votacion'];
+		$query = "INSERT INTO log_cambios( cedula, valor_anterior, valor_nuevo, fecha, quien, votacion) VALUES ('$cedula', '$valor_anterior', '$valor_nuevo', '$fecha', '$quien', '$votacion')";
 		$res = $this->_conn->query($query);
-        return mysqli_insert_id($this->_conn->getConnection());
+		return mysqli_insert_id($this->_conn->getConnection());
 	}
 
 	/**
@@ -38,14 +41,17 @@ class Administracion_Model_DbTable_Logcambios extends Db_Table
 	 * @param  integer    identificador al cual se le va a realizar la actualizacion
 	 * @return void
 	 */
-	public function update($data,$id){
-		
+	public function update($data, $id)
+	{
+
 		$cedula = $data['cedula'];
 		$valor_anterior = $data['valor_anterior'];
 		$valor_nuevo = $data['valor_nuevo'];
 		$fecha = $data['fecha'];
 		$quien = $data['quien'];
-		$query = "UPDATE log_cambios SET  cedula = '$cedula', valor_anterior = '$valor_anterior', valor_nuevo = '$valor_nuevo', fecha = '$fecha', quien = '$quien' WHERE id = '".$id."'";
+		$votacion = $data['votacion'];
+
+		$query = "UPDATE log_cambios SET  cedula = '$cedula', valor_anterior = '$valor_anterior', valor_nuevo = '$valor_nuevo', fecha = '$fecha', quien = '$quien', votacion = '$votacion' WHERE id = $id";
 		$res = $this->_conn->query($query);
 	}
 }

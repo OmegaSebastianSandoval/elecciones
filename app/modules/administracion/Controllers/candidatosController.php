@@ -42,8 +42,10 @@ class Administracion_candidatosController extends Administracion_mainController
 	 */
 	protected $namepages;
 
+	protected $namepageactual;
+	protected $votacion;
 
-
+	protected $tarjeton;
 	/**
 	 * Inicializa las variables principales del controlador candidatos .
 	 *
@@ -62,6 +64,13 @@ class Administracion_candidatosController extends Administracion_mainController
 		} else {
 			$this->pages = 20;
 		}
+
+		$votacion = $this->_getSanitizedParam("votacion");
+		$this->votacion = $votacion;
+		$this->_view->votacion = $votacion;
+		$tarjeton = $this->_getSanitizedParam("tarjeton");
+		$this->tarjeton = $tarjeton;
+		$this->_view->tarjeton = $tarjeton;
 		parent::init();
 	}
 
@@ -112,7 +121,7 @@ class Administracion_candidatosController extends Administracion_mainController
 		$this->_view->page = $page;
 		$this->_view->lists = $this->mainModel->getListPages($filters, $order, $start, $amount);
 		$this->_view->csrf_section = $this->_csrf_section;
-		$this->_view->list_zona = $this->getZona();
+		$this->_view->list_zona = $this->getZona($this->votacion);
 	}
 
 	public function eleccionesAction()
@@ -154,7 +163,7 @@ class Administracion_candidatosController extends Administracion_mainController
 	{
 		$votacion = $this->_getSanitizedParam("votacion");
 		if (!$votacion) {
-			header('Location: /administracion/candidatos/elecciones');
+			header('Location: /administracion/candidatos/elecciones?error=1');
 		}
 		$this->_view->votacion = $votacion;
 		$tarjetonesModel = new Administracion_Model_DbTable_Tarjetones();
@@ -190,7 +199,7 @@ class Administracion_candidatosController extends Administracion_mainController
 		$this->_view->lists = $tarjetonesModel->getListPages($filters, $order, $start, $amount);
 		$this->_view->csrf_section = $this->_csrf_section;
 		$this->_view->eleccion = $this->_getSanitizedParam("eleccion");
-		$this->_view->list_zona = $this->getZona();
+		$this->_view->list_zona = $this->getZona($this->votacion);
 	}
 
 	/**
@@ -204,7 +213,7 @@ class Administracion_candidatosController extends Administracion_mainController
 		$this->_csrf_section = "manage_candidatos_" . date("YmdHis");
 		$this->_csrf->generateCode($this->_csrf_section);
 		$this->_view->csrf_section = $this->_csrf_section;
-		$this->_view->list_zona = $this->getZona();
+		$this->_view->list_zona = $this->getZona($this->votacion);
 
 		$this->_view->csrf = Session::getInstance()->get('csrf')[$this->_csrf_section];
 		$id = $this->_getSanitizedParam("id");
@@ -253,7 +262,7 @@ class Administracion_candidatosController extends Administracion_mainController
 			$logModel = new Administracion_Model_DbTable_Log();
 			$logModel->insert($data);
 		}
-		header('Location: ' . $this->route . '' . '');
+		header('Location: ' . $this->route . '?votacion=' . $this->votacion . '&tarjeton=' . $this->tarjeton);
 	}
 
 	/**
@@ -287,7 +296,7 @@ class Administracion_candidatosController extends Administracion_mainController
 			$logModel = new Administracion_Model_DbTable_Log();
 			$logModel->insert($data);
 		}
-		header('Location: ' . $this->route . '' . '');
+		header('Location: ' . $this->route . '?votacion=' . $this->votacion . '&tarjeton=' . $this->tarjeton);
 	}
 
 	/**
@@ -317,7 +326,7 @@ class Administracion_candidatosController extends Administracion_mainController
 				}
 			}
 		}
-		header('Location: ' . $this->route . '' . '');
+		header('Location: ' . $this->route . '?votacion=' . $this->votacion . '&tarjeton=' . $this->tarjeton);
 	}
 
 	/**
@@ -325,10 +334,10 @@ class Administracion_candidatosController extends Administracion_mainController
 	 *
 	 * @return array cadena con los valores del campo Zona.
 	 */
-	private function getZona()
+	private function getZona($votacion)
 	{
 		$modelData = new Administracion_Model_DbTable_Zonas();
-		$data = $modelData->getList();
+		$data = $modelData->getList("votacion = " . $votacion, "");
 		$array = array();
 		foreach ($data as $key => $value) {
 			$array[$value->id] = $value->zona;
@@ -365,6 +374,9 @@ class Administracion_candidatosController extends Administracion_mainController
 		}
 		$data['detalle'] = $this->_getSanitizedParam("detalle");
 		$data['candidato_tarjeton'] = $this->_getSanitizedParam("candidato_tarjeton");
+		$data['votacion'] = $this->_getSanitizedParam("votacion");
+
+
 
 		$data['cedula'] = $this->_getSanitizedParam("cedula");
 		return $data;

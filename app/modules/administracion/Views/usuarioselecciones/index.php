@@ -1,6 +1,6 @@
 <h1 class="titulo-principal py-2"><i class="fas fa-cogs"></i> <?php echo $this->titlesection; ?></h1>
 <div class="container-fluid">
-	<form action="<?php echo $this->route; ?>" method="post">
+	<form action="<?php echo $this->route; ?>?votacion=<?php echo $this->votacion?>" method="post">
 		<div class="content-dashboard">
 			<div class="row">
 				<div class="col">
@@ -33,7 +33,7 @@
 				<div class="col">
 					<label class="form-label">&nbsp;</label>
 					<label class="input-group">
-						<a class="btn w-100 btn-azul-claro " href="<?php echo $this->route; ?>?cleanfilter=1"> <i class="fas fa-eraser"></i> Limpiar Filtro</a>
+						<a class="btn w-100 btn-azul-claro " href="<?php echo $this->route; ?>?cleanfilter=1&votacion=<?php echo $this->votacion?>"> <i class="fas fa-eraser"></i> Limpiar Filtro</a>
 					</label>
 
 				</div>
@@ -102,13 +102,13 @@
 				</div>
 				<div class="col-4">
 					<div class="d-flex justify-content-end">
-						<a class="btn btn-sm btn-success me-1" href="<?php echo $this->route . "/manage"; ?>">
+						<a class="btn btn-sm btn-success me-1" href="<?php echo $this->route . "/manage?votacion=".$this->votacion; ?>">
 							<i class="fas fa-plus-square"></i> Crear Nuevo
 						</a>
-						<a class="btn btn-sm btn-success btn-verde me-1" target="_blank" href="<?php echo $this->route . "/exportarcambios?excel=1"; ?>">
+						<a class="btn btn-sm btn-success btn-verde me-1" target="_blank" href="<?php echo $this->route . "/exportarcambios?excel=1&votacion=".$this->votacion; ?>">
 							<i class="fa-solid fa-file-excel"></i> Exportar cambios
 						</a>
-						<a class="btn btn-sm btn-success btn-verde" target="_blank" href="<?php echo $this->route . "/exportarusuarios?excel=1"; ?>">
+						<a class="btn btn-sm btn-success btn-verde" target="_blank" href="<?php echo $this->route . "/exportarusuarios?excel=1&votacion=".$this->votacion; ?>">
 							<i class="fa-solid fa-file-excel"></i> Exportar usuario
 						</a>
 					</div>
@@ -122,6 +122,7 @@
 						<td>Cedula</td>
 						<td>Nombre</td>
 						<td>Correo</td>
+						<td>Zona</td>
 						<td width="100"></td>
 					</tr>
 				</thead>
@@ -132,9 +133,10 @@
 							<td><?= $content->cedula; ?></td>
 							<td><?= $content->nombre; ?></td>
 							<td><?= $content->correo; ?></td>
+							<td><?= $this->list_zona[$content->zona]; ?></td>
 							<td class="text-right">
 								<div>
-									<a class="btn btn-azul btn-sm" href="<?php echo $this->route; ?>/manage?id=<?= $id ?>" data-bs-toggle="tooltip" data-placement="top" title="Editar"><i class="fas fa-pen-alt"></i></a>
+									<a class="btn btn-azul btn-sm" href="<?php echo $this->route; ?>/manage?id=<?= $id ?>&votacion=<?php echo $this->votacion?>" data-bs-toggle="tooltip" data-placement="top" title="Editar"><i class="fas fa-pen-alt"></i></a>
 									<span data-bs-toggle="tooltip" data-placement="top" title="Eliminar"><a class="btn btn-rojo btn-sm" data-bs-toggle="modal" data-bs-target="#modal<?= $id ?>"><i class="fas fa-trash-alt"></i></a></span>
 								</div>
 								<!-- Modal -->
@@ -150,7 +152,7 @@
 											</div>
 											<div class="modal-footer">
 												<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-												<a class="btn btn-danger" href="<?php echo $this->route; ?>/delete?id=<?= $id ?>&csrf=<?= $this->csrf; ?><?php echo ''; ?>">Eliminar</a>
+												<a class="btn btn-danger" href="<?php echo $this->route; ?>/delete?id=<?= $id ?>&csrf=<?= $this->csrf; ?><?php echo ''; ?>&votacion=<?php echo $this->votacion?>">Eliminar</a>
 											</div>
 										</div>
 									</div>
