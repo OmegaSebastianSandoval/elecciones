@@ -1,0 +1,113 @@
+@media (width <1400px) {
+    nav{
+        height: 100%;
+    }
+    nav .steps-menu .step {
+        font-size: 16px;
+    }
+    nav .user-nav{
+        padding: 5px;
+    }
+    .table-container{
+        padding: 0;
+        margin: 0;
+        margin-top: 15px;
+    }
+}
+
+@media (width <991px) {
+    .steps-menu {
+        display: none !important;
+    }
+
+    nav .user-nav {
+        width: 45%;
+    }
+    nav .nav-brand {
+        width: 25%;
+    }
+}
+
+@media (width <768px) {
+    header{
+        height: 55px;
+    }
+    .contenedor-general {
+        height: calc(100% - 130px);
+    }
+    .swal2-shown.swal2-height-auto {
+        padding-right: 0 !important;
+    }
+    nav{
+        height: 100%;
+    }
+    nav .user-nav {
+        width: 75%;
+
+    }
+    .general-container.login-container .check-text{
+        font-size: 15px;
+    }
+    .step-guide h3{
+        font-size: 15px;
+    }
+    .general-container.login-container {
+       /*  padding-top: 120px;
+        min-height: 100dvh; */
+    }
+
+    .general-container.login-container .logo-omega {
+        max-width: 200px;
+    }
+
+    .general-container.login-container .step-number {
+        margin-bottom: 10px;
+        margin-top: 0px;
+        height: 60px;
+    }
+
+    .general-container.login-container .title-two {
+        font-size: 28px;
+        display: block;
+    }
+    .mt-4.text-center.text-blue{
+        margin-top: 10px !important;
+    }
+    .general-container.login-container .login-form {
+        max-width: none;
+        margin: auto;
+    }
+    .general-container.login-container .login-form .mb-4{
+        margin-bottom: 15px !important;
+    }
+    .redes {
+        position: relative;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        top: 0;
+        flex-direction: row;
+        transform: translateY(-50%);
+        justify-content: center;
+        border-top: 1px solid #fff;
+        border-left: 1px solid #fff;
+        border-right: 1px solid #fff;
+        border-radius: 20px 20px 0 0;
+        padding: 0;
+        gap: 10px;
+        transform: none;
+        margin-top: -50px;
+    }
+
+
+
+    /* Votacion */
+    .general-container.step3-container .info-text {
+        margin-bottom: 0;
+    }
+
+    .general-container.step3-container table td {
+        padding: 10px;
+    }
+
+}

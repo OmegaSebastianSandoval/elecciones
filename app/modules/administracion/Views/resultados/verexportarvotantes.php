@@ -1,0 +1,29 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+
+
+	<table width="400" border="1">
+		<thead>
+			<tr>
+				<td>Usuario</td>
+				<!-- <td>Fecha</td> -->
+				<td>Zona</td>
+				<!-- <td>Tarjeton</td> -->
+				<td>Número certificado electoral</td>
+			</tr>
+		</thead>
+		<tbody>
+			<?php foreach ($this->lists as $content) { ?>
+				<?php $id =  $content->id; ?>
+				<tr>
+
+					<td><?= $this->list_usuarios[$content->usuario]; ?></td>
+					<!-- <td><?= $content->fecha; ?></td> -->
+					<td><?= $this->list_zona[$content->zona]; ?></td>
+					<!-- <td><?= $this->list_tarjeton[$content->tarjeton]; ?></td> -->
+					<td><?= $content->consecutivo; ?></td>
+
+				</tr>
+			<?php } ?>
+		</tbody>
+	</table>
