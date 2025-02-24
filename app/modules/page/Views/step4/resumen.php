@@ -89,7 +89,13 @@
             <table class="mb-4">
               <thead>
                 <tr>
-                  <th colspan="4" class="table-title">
+                  <?php
+                  $colspan = 3 + ( $tarjeton['tarjeton']->tarjeton_mostrar_suplente == 1) + ( $tarjeton['tarjeton']->tarjeton_mostrar_detalle == 1);
+                  ?>
+                  
+                  <th colspan="<?php echo $colspan ?>" class="table-title">
+
+
                     <?php echo $tarjeton['tarjeton']->tarjeton_nombre ?>
                   </th>
                 </tr>
@@ -117,17 +123,21 @@
                     <td>
                       <span class="name-candidate">
                         <?php echo $candidate->nombre ?>
-                        <br>
+                        <!--  <br>
                         <span>
                           <?php echo $candidate->detalle ?>
+                        </span> -->
+                      </span>
+                    </td>
+                    <?php if ($tarjeton['tarjeton']->tarjeton_mostrar_detalle == 1) { ?>
+
+                      <td align="center">
+                        <span class="name-candidate">
+                          <?php echo $candidate->detalle ?>
                         </span>
-                      </span>
-                    </td>
-                    <td align="center">
-                      <span class="name-candidate">
-                        <?php echo $candidate->detalle ?>
-                      </span>
-                    </td>
+                      </td>
+                    <?php } ?>
+
                   </tr>
                 <?php } ?>
 

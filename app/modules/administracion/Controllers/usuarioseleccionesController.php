@@ -367,7 +367,7 @@ class Administracion_usuarioseleccionesController extends Administracion_mainCon
 		print_r($this->_view->list_zona);
 		print_r($this->_view->list);
 
-		
+
 		$hoy = date("YmdHis");
 		$excel = $this->_getSanitizedParam("excel");
 
@@ -427,13 +427,20 @@ class Administracion_usuarioseleccionesController extends Administracion_mainCon
 		if (!$votacion) {
 			header('Location: /administracion/usuarioselecciones/eleccionesgenerar?page=1');
 		}
+
+		/* 	echo "<pre>";
+		print_r(Session::getInstance()->get('usuariosUpdate'));
+		echo "</pre>"; */
+		ini_set('max_execution_time', 0);
+		ini_set('memory_limit', -1);
 	}
 	public function generarAction()
 	{
-		$this->setLayout('blanco');
+		// $this->setLayout('blanco');
 
 
-
+		ini_set('max_execution_time', 0);
+		ini_set('memory_limit', -1);
 		$this->_view->votacion = $votacion = $this->_getSanitizedParam("votacion");
 		if (!$votacion) {
 			header('Location: /administracion/usuarioselecciones/eleccionesgenerar?page=1');
@@ -456,11 +463,7 @@ class Administracion_usuarioseleccionesController extends Administracion_mainCon
 
 		$total = count($usuarios);
 		$campoinicial = intval($campoinicial);
-		if ($campoinicial + 100 >= $total) {
-			$campofinal = $total;
-		} else {
-			$campofinal = $campoinicial + 100;
-		}
+		$campofinal = min($campoinicial + 100, $total);
 
 		$this->_view->campoinicial = $campoinicial;
 		$this->_view->campofinal = $campofinal;
@@ -485,16 +488,20 @@ class Administracion_usuarioseleccionesController extends Administracion_mainCon
 				'clave' => $clave,
 			];
 		}
-
+		/* http://localhost:8043/administracion/usuarioselecciones/generar?inicio=1900&votacion=1 */
 		// Guardar el array de usuarios en la sesión
 		Session::getInstance()->set('usuariosUpdate', $usuariosUpdate);
 
 		// Redirigir para procesar el siguiente bloque o finalizar
-		if ($campoinicial + 100 >= $total) {
+		if ($campofinal >= $total) {
+			// Última iteración: Limpia la sesión y redirige
+			Session::getInstance()->set('usuarios', []);
+			// Session::getInstance()->set('usuariosUpdate', []);
 			header('Location: ' . $this->route . '/generarclaves?mostrar=1' . '&votacion=' . $votacion);
-		} else {
-			header('Location: ' . $this->route . '/generar?inicio=' . $campofinal . '&votacion=' . $votacion);
+			exit;
 		}
+
+		header('Location: ' . $this->route . '/generar?inicio=' . $campofinal . '&votacion=' . $votacion);
 		exit;
 	}
 

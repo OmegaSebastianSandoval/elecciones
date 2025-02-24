@@ -16,7 +16,7 @@ class Page_step3Controller extends Page_mainController
   }
   public function indexAction()
   {
-    
+
 
     // Verifica si ya votó el usuario
     $this->verifyResult();
@@ -32,7 +32,7 @@ class Page_step3Controller extends Page_mainController
     $votacionActual = $this->getVotacion();
     $configVotacion = $votacionActual['votacion'];
 
-   
+
 
     //traer ID de la zona que se llama todas
     // $zonaTodas = $zonas_model->getList("zona = 'TODAS'")[0];
@@ -71,6 +71,10 @@ class Page_step3Controller extends Page_mainController
     $this->_view->list_zonas = $this->getZona();
     $this->_view->posicionvotacion = Session::getInstance()->get('posicionvotacion');
     $this->_view->tarjeton = $this->template->getTarjetonesAll();
+    /* $resumen = Session::getInstance()->get('resumen');
+    echo "<pre>";
+    print_r($resumen);
+    echo "</pre>"; */
   }
 
 
@@ -117,7 +121,7 @@ class Page_step3Controller extends Page_mainController
       // Envía al resumen
       header("Location: /page/step4/resumen");
     } else {
-      Session::getInstance()->set('posicionvotacion', ($posicionvotacion + 1));
+      Session::getInstance()->set('posicionvotacion', $posicionvotacion + 1);
       Session::getInstance()->set('tarjetonactual', $tarjetonesAll[($posicionvotacion + 1)]);
       // $this->_view->tarjeton = $this->template->getTarjetonesAll();
       header("Location: /page/step3/votacion");
@@ -145,7 +149,7 @@ class Page_step3Controller extends Page_mainController
       // Redirigir a la página de votación
       header("Location: /page/step3/votacion");
     } else {
-      header("Location: /page/step2");
+      header("Location: /");
     }
   }
 }

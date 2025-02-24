@@ -1,3 +1,8 @@
+<style>
+  .table>:not(caption)>*>* {
+    background-color: unset;
+  }
+</style>
 <h1 class="titulo-principal py-2"><i class="fas fa-cogs"></i> <?php echo $this->titlesection; ?></h1>
 <div class="container-fluid">
 
@@ -18,7 +23,7 @@
 				<tbody>
 					<?php foreach ($this->lists as $content) { ?>
 						<?php $id =  $content->id; ?>
-						<tr>
+						<tr  style="background-color: <?= $content->votacion_actual == 1 ? '#c2ffb3 !important' : ''; ?>">
 
 							<td><?= $content->votacion_titulo; ?></td>
 							<td><?= $content->fecha_inicio; ?></td>

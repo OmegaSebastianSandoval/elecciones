@@ -5,14 +5,14 @@
 
 		<div class="d-flex justify-content-end gap-4 pe-3">
 			<div class="text-end" align="right">
-				<a  target="_blank" href="<?php echo $this->route; ?>/resultadofinalimprimir?excel=1" data-bs-toggle="tooltip" data-placement="top" title="Exportar" class="custom-btn-home me-2">
+				<a  target="_blank" href="<?php echo $this->route; ?>/resultadofinalimprimir?excel=1&votacion=<?= $this->votacion?>" data-bs-toggle="tooltip" data-placement="top" title="Exportar" class="custom-btn-home me-2">
 					<span class="add-button-home lf-part">Exportar</span>
 					<span class="rg-part"><i class="fas fa-plus"></i></span>
 				</a>
 			</div>
 
 			<div class="text-end" align="right">
-				<a  target="_blank" href="<?php echo $this->route; ?>/resultadofinalimprimir?imprimir=1" data-bs-toggle="tooltip" data-placement="top" title="Exportar" class="custom-btn-home me-2">
+				<a  target="_blank" href="<?php echo $this->route; ?>/resultadofinalimprimir?imprimir=1&votacion=<?= $this->votacion?>" data-bs-toggle="tooltip" data-placement="top" title="Exportar" class="custom-btn-home me-2">
 					<span class="add-button-home lf-part">Imprimir</span>
 					<span class="rg-part"><i class="fas fa-plus"></i></span>
 				</a>

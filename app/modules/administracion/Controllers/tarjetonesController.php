@@ -211,11 +211,13 @@ class Administracion_tarjetonesController extends Administracion_mainController
 				}
 
 				if (
-					$data["tarjeton_voto_blanco"] == 0 &&
-					$content->tarjeton_voto_blanco == 1
+					($data["tarjeton_voto_blanco"] == 0 &&
+					$content->tarjeton_voto_blanco == 1) || 
+					$data["tarjeton_voto_blanco"] == 0
 				) {
 					$this->deleteVotosBlanco($data["tarjeton_elecciones"], $id);
 				}
+
 			}
 			$data['tarjeton_id'] = $id;
 			$data['log_log'] = print_r($data, true);

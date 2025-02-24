@@ -96,8 +96,6 @@ class Page_step4Controller extends Page_mainController
 
 
 
-
-
     $this->_view->user_info = $user_info = Session::getInstance()->get('user');
     $this->_view->tarjeton = $tarjetonactual;
     $this->_view->zonaInfo = $zonasModel->getById($user_info->zona);
@@ -137,7 +135,7 @@ class Page_step4Controller extends Page_mainController
     // Instancia del modelo de resultados
     $resultados_model = new Administracion_Model_DbTable_Resultados();
     $candidatos_model = new Administracion_Model_DbTable_Candidatos();
-    $tarjetones_model = new Administracion_Model_DbTable_Tarjetones();
+    // $tarjetones_model = new Administracion_Model_DbTable_Tarjetones();
     $votacionActual = $this->getVotacion();
 
     $votacionId = $votacionActual['votacion']->id;
@@ -149,7 +147,7 @@ class Page_step4Controller extends Page_mainController
 
     if (!$verify_resultados) {
       $resumen = Session::getInstance()->get('resumen');
-      $data['consecutivo'] = $this->getConsecutivo();
+      $data['consecutivo'] = $this->getConsecutivo($votacionId );
 
       foreach ($resumen as $tarjetonId => $candidatosIds) {
 
@@ -160,7 +158,7 @@ class Page_step4Controller extends Page_mainController
 
           $data['candidato'] = $candidatoId;
           $data['tarjeton'] = $tarjetonId;
-          $data['votacion	'] = $votacionId;
+          $data['votacion'] = $votacionId;
 
 
           $data['usuario'] = Session::getInstance()->get('user')->id;
@@ -169,7 +167,6 @@ class Page_step4Controller extends Page_mainController
           $data['isp'] = $_SERVER['HTTP_USER_AGENT'];
           $data['zona'] =  Session::getInstance()->get('user')->zona;
           $data['opinion'] = $this->_getSanitizedParam('comentarios');
-
 
           // Inserta los datos en la tabla de resultados
           if ($data['usuario']) {
@@ -189,7 +186,7 @@ class Page_step4Controller extends Page_mainController
 
     if ($resEmail == 1) {
       $res['status'] = 'ok';
-      header('Location: /page/step5/?res=' . $res['status']);
+     header('Location: /page/step5/?res=' . $res['status']);
       return;
     }
 
@@ -263,13 +260,13 @@ class Page_step4Controller extends Page_mainController
    *
    * @return int El siguiente consecutivo.
    */
-  public function getConsecutivo()
+  public function getConsecutivo($votacion)
   {
     // Crear una instancia del modelo de resultados
     $resultados_model = new Administracion_Model_DbTable_Resultados();
 
     // Obtener el último registro de la lista de resultados
-    $ultimoRegistro = $resultados_model->getList("", "id DESC")[0];
+    $ultimoRegistro = $resultados_model->getList("votacion = '$votacion'", "id DESC")[0];
 
     // Obtener el valor del consecutivo del último registro
     $consecutivo = $ultimoRegistro->consecutivo ?? 0;

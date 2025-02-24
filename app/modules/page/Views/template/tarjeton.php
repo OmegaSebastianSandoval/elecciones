@@ -17,19 +17,19 @@
     </span>
     <div class="info-text mt-3">
       <?php
-     
 
-     $cantidadMaxima = $this->cantidadMaximaVotos;
-     $cantidadCandidatos = count($this->candidatos);
-     
-     if ($cantidadMaxima > $cantidadCandidatos) {
-         $cantidadMaxima = $cantidadCandidatos;
-     
-         if ($this->tarjeton->tarjeton_voto_blanco == 1) {
-             $cantidadMaxima--;
-         }
-     }
-     
+
+      $cantidadMaxima = $this->cantidadMaximaVotos;
+      $cantidadCandidatos = count($this->candidatos);
+
+      if ($cantidadMaxima > $cantidadCandidatos) {
+        $cantidadMaxima = $cantidadCandidatos;
+
+        if ($this->tarjeton->tarjeton_voto_blanco == 1) {
+          $cantidadMaxima--;
+        }
+      }
+
       ?>
       <?php if ($this->tarjeton->tarjeton_zona == 1) { ?>
         <div class="text-gray mt-2">
@@ -58,8 +58,17 @@
       Has click sobre la foto para seleccionar.
     </div>
 
+    <?php if ($cantidadCandidatos == 0) { ?>
+      <div class="alert alert-danger" role="alert">
+        No hay candidatos disponibles para esta elección, por favor seleccione continuar.
+      </div>
+
+    <?php } ?>
+
+
     <form action="/page/step3/selectcandidates" class="row login-form form-multiple formulario-eleccion p-0" method="post" id="selectCandidateMultiple1">
       <input type="hidden" name="cantidad-maxima" id="cantidad-maxima" value="<?php echo $this->cantidadMaximaVotos ?>">
+      <input type="hidden" name="cantidad-candidatos" id="cantidad-candidatos" value="<?php echo $cantidadCandidatos ?>">
       <input type="hidden" name="mostrar-fotos" id="mostrar-fotos" value="<?php echo $this->tarjeton->tarjeton_mostrar_fotos ?>">
       <?php
       $colspan = 5 + ($this->tarjeton->tarjeton_mostrar_suplente == 1) + ($this->tarjeton->tarjeton_mostrar_detalle == 1);
@@ -79,7 +88,7 @@
                 <th></th>
                 <th>No.</th>
                 <th>Candidato</th>
-                
+
                 <?php if ($this->tarjeton->tarjeton_mostrar_detalle == 1) { ?>
                   <th>Detalle</th>
                 <?php } ?>
@@ -110,7 +119,7 @@
                   <td><span class="name-candidate"><?php echo $c->nombre ?><br>
                       <!-- <span><?php echo $c->detalle ?></span> -->
                     </span></td>
-                  
+
                   <?php if ($this->tarjeton->tarjeton_mostrar_detalle == 1) { ?>
                     <td><span class="name-candidate"><?php echo $c->detalle ?></span></td>
                   <?php } ?>
@@ -135,7 +144,7 @@
                 <th></th>
                 <th>No.</th>
                 <th>Candidato</th>
-                
+
                 <?php if ($this->tarjeton->tarjeton_mostrar_detalle == 1) { ?>
                   <th>Detalle</th>
                 <?php } ?>
@@ -166,7 +175,7 @@
                   <td><span class="name-candidate"><?php echo $c->nombre ?><br>
                       <!-- <span><?php echo $c->detalle ?></span> -->
                     </span></td>
-                  
+
                   <?php if ($this->tarjeton->tarjeton_mostrar_detalle == 1) { ?>
                     <td><span class="name-candidate"><?php echo $c->detalle ?></span></td>
                   <?php } ?>
@@ -179,14 +188,14 @@
           </table>
         </div>
       </div>
-      <div class="col-12 mt-3 d-flex justify-content-center">
-        <div class="d-flex justify-content-end">
-          <!--  <a class="button back" href="/page/step3/backselection">
+      <div class="col-12 mt-4 d-flex justify-content-center">
+        <div class="d-flex justify-content-end gap-3">
+           <a class="button back" href="/page/step3/backselection">
 
             <div class="text">
               Volver
             </div>
-          </a> -->
+          </a>
 
           <button class="button">
             <div class="text">

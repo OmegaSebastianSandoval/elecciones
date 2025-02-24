@@ -35,6 +35,9 @@ $(document).ready(function () {
       const maxVotes = parseInt(
         document.getElementById("cantidad-maxima").value
       );
+      const cantidadCandidatos = parseInt(
+        document.getElementById("cantidad-candidatos").value
+      );
       let isChecked = false;
 
       let checkboxes_select = formulario.querySelectorAll(".checkbox:checked");
@@ -62,11 +65,11 @@ $(document).ready(function () {
         }
       });
 
-      if (!isChecked) {
+      if (!isChecked && cantidadCandidatos >= 1) {
         Swal.fire({
           icon: "error",
           title: "Error",
-          text: "Selecciona al menos un candidato",
+          text: "Seleccione al menos un candidato",
           confirmButtonColor: "#af1c30",
           confirmButtonText: "Volver",
         });

@@ -58,8 +58,8 @@
 	<thead>
 		<tr>
 			<td colspan="3" align="center">
-				<h1>Proceso Electorial Delegados A La Asamblea Ordinaria Fempro <br>
-					<strong>2025</strong> Resultados
+				<h1><?= $this->votacionInfo->votacion_titulo?> <br>
+					<strong>Resultados</strong>
 				</h1>
 			</td>
 		</tr>

@@ -89,7 +89,7 @@ class Administracion_Model_DbTable_Resultados extends Db_Table
 		return $res;
 	}
 
-	public function getResultadosVariosCandidatos($zona)
+	public function getResultadosVariosCandidatos($tarjeton)
 	{
 
 		$select = 'SELECT 
@@ -97,7 +97,7 @@ class Administracion_Model_DbTable_Resultados extends Db_Table
 		COUNT(DISTINCT resultados.id) AS total_votos
 		FROM resultados
 		LEFT JOIN candidatos ON resultados.candidato = candidatos.id
-		WHERE resultados.tarjeton = ' . $zona . '
+		WHERE resultados.tarjeton = ' . $tarjeton . '
 		GROUP BY candidatos.id, candidatos.nombre
 		ORDER BY total_votos DESC';
 		$res = $this->_conn->query($select)->fetchAsObject();

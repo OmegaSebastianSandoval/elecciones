@@ -117,7 +117,7 @@ class Administracion_resultadosController extends Administracion_mainController
 		$filters = (object)Session::getInstance()->get($this->namefilter);
 		$this->_view->filters = $filters;
 		$filters = $this->getFilter();
-		$order = "";
+		$order = "id DESC";
 		$eleccionesModel = new Administracion_Model_DbTable_Configvotacion();
 		$list = $eleccionesModel->getList($filters, $order);
 		$amount = $this->pages;
@@ -604,7 +604,7 @@ class Administracion_resultadosController extends Administracion_mainController
 		$usuariosEleccionesModel = new Administracion_Model_DbTable_Usuarioselecciones();
 		$candidatosModel = new Administracion_Model_DbTable_Candidatos();
 
-		$zonas = $zonasModel->getList("", "zona ASC");
+		$zonas = $zonasModel->getList("votacion = '$votacion'", "zona ASC");
 		$tarjetones = $tarjetonesModel->getList("tarjeton_estado = 1 AND tarjeton_elecciones = '$votacion'", "tarjeton_id ASC");
 		$totalUsuarios = 0;
 		$total = 0;
@@ -627,7 +627,7 @@ class Administracion_resultadosController extends Administracion_mainController
 					$votosPosibles = count($usuariosEleccionesModel->getList("zona = '$zona->id' AND activo = 1 "));
 
 					// Obtener la cantidad de votos registrados en la zona para este tarjetón
-					$votosRegistrados = count($resultadosModel->getList("zona = '$zona->id' AND tarjeton = '$tarjeton->tarjeton_id' "));
+					$votosRegistrados = count($resultadosModel->getList("zona = '$zona->id' AND tarjeton = '$tarjeton->tarjeton_id' AND votacion = '$votacion' "));
 
 					// Calcular el porcentaje de votos registrados en relación con los votos posibles
 					$promedioZona = ($votosPosibles > 0) ? ($votosRegistrados * 100) / $votosPosibles : 0;
@@ -679,14 +679,17 @@ class Administracion_resultadosController extends Administracion_mainController
 		$this->setLayout('blanco');
 
 		$this->_view->votacion = $votacion = $this->_getSanitizedParam("votacion");
-
+		$votacionModel = new Administracion_Model_DbTable_Configvotacion();
+		$votacionInfo = $votacionModel->getById($votacion);
+		$this->_view->votacionInfo = $votacionInfo;
 		$zonasModel = new Administracion_Model_DbTable_Zonas();
 		$resultadosModel = new Administracion_Model_DbTable_Resultados();
 
 		$tarjetonesModel = new Administracion_Model_DbTable_Tarjetones();
 		$usuariosEleccionesModel = new Administracion_Model_DbTable_Usuarioselecciones();
 
-		$zonas = $zonasModel->getList("", "zona ASC");
+		$zonas = $zonasModel->getList("votacion = '$votacion'", "zona ASC");
+		
 		$tarjetones = $tarjetonesModel->getList("tarjeton_estado = 1  AND tarjeton_elecciones = '$votacion' ", "tarjeton_id ASC");
 
 		$resultado = [];
@@ -704,10 +707,10 @@ class Administracion_resultadosController extends Administracion_mainController
 
 				foreach ($zonas as $zona) {
 					// Obtener la cantidad de votos posibles en la zona
-					$votosPosibles = count($usuariosEleccionesModel->getList("zona = '$zona->id' AND activo = 1 "));
+					$votosPosibles = count($usuariosEleccionesModel->getList("zona = '$zona->id' AND activo = 1  "));
 
 					// Obtener la cantidad de votos registrados en la zona para este tarjetón
-					$votosRegistrados = count($resultadosModel->getList("zona = '$zona->id' AND tarjeton = '$tarjeton->tarjeton_id' "));
+					$votosRegistrados = count($resultadosModel->getList("zona = '$zona->id' AND tarjeton = '$tarjeton->tarjeton_id' AND votacion = '$votacion' "));
 
 					// Calcular el porcentaje de votos registrados en relación con los votos posibles
 					$promedioZona = ($votosPosibles > 0) ? ($votosRegistrados * 100) / $votosPosibles : 0;
