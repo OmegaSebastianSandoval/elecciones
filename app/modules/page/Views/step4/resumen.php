@@ -152,8 +152,8 @@
         <?php if ($this->config->votacion_mostrar_campo == 1) { ?>
 
           <div class="form-floating">
-            <textarea class="form-control" placeholder="" name="comentarios" id="comentarios" style="height: 100px"></textarea>
-            <label for="comentarios"> <?php echo $this->config->votacion_texto_campo ?></label>
+            <textarea class="form-control" placeholder="Leave a comment here" name="comentarios" id="comentarios" style="height: 100px"></textarea>
+            <label for="comentarios" style="left:auto"> <?php echo $this->config->votacion_texto_campo ?> deje aca su comentario</label>
           </div>
         <?php } ?>
         <!-- <input type="hidden" name="zona" value="<?php echo $this->user_info->zona ?>"> -->

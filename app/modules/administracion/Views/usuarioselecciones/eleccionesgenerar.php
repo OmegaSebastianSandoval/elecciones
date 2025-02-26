@@ -12,7 +12,7 @@
         <div class="col-4">
           <div class="titulo-registro">Se encontraron <?php echo $this->register_number; ?> Registros</div>
         </div>
-        <div class="col-4 d-flex align-items-center justify-content-end text-end">
+        <div class="col-4 d-flex align-items-center justify-content-end text-end d-none" >
           <div class="texto-paginas me-2">Registros por página:</div>
           <select class="form-select form-select-sm selectpagination" style="width: auto;">
             <option value="20" <?php if ($this->pages == 20) {
@@ -73,31 +73,5 @@
     <input type="hidden" id="csrf" value="<?php echo $this->csrf ?>"><input type="hidden" id="page-route"
       value="<?php echo $this->route; ?>/changepage">
   </div>
-  <div align="center">
-    <ul class="pagination justify-content-center">
-      <?php
 
-      $min = $this->page - 10;
-      $max = $this->page + 10;
-
-      if ($this->totalpages > 1) {
-        if ($this->page != 1) {
-          echo '<li class="page-item" ><a class="page-link"  href="' . $url . '?page=' . ($this->page - 1) . '">&laquo; Anterior </a></li>';
-        }
-        for ($i = 1; $i <= $bs - $this->totalpages; $i++) {
-          if ($this->page == $i) {
-            echo '<li class="active page-item"><a class="page-link">' . $this->page . '</a></li>';
-          } else {
-            if ($i >= $min and $i <= $max) {
-              echo '<li class="page-item"><a class="page-link" href="' . $url . '?page=' . $i . '">' . $i . '</a></li>';
-            }
-          }
-        }
-        if ($this->page != $this->totalpages) {
-          echo '<li class="page-item"><a class="page-link" href="' . $url . '?page=' . ($this->page + 1) . '">Siguiente &raquo;</a></li>';
-        }
-      }
-      ?>
-    </ul>
-  </div>
 </div>

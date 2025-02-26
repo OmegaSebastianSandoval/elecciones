@@ -99,17 +99,17 @@ class Page_step4Controller extends Page_mainController
     $this->_view->user_info = $user_info = Session::getInstance()->get('user');
     $this->_view->tarjeton = $tarjetonactual;
     $this->_view->zonaInfo = $zonasModel->getById($user_info->zona);
-    $resumenCompleto = array();
+    $resumenCompleto = [];
 
     foreach ($resumen as $tarjetonId => $candidatosIds) {
       // Consultar el tarjetón por el ID
       $tarjeton = $tarjetones_model->getById($tarjetonId);
 
       // Inicializar un array para almacenar la información del tarjetón y los candidatos
-      $infoTarjeton = array(
+      $infoTarjeton = [
         'tarjeton' => $tarjeton,
-        'candidatos' => array()
-      );
+        'candidatos' => []
+      ];
 
       // Recorrer los IDs de candidatos y consultar la información de cada candidato
       foreach ($candidatosIds as $candidatoId) {
@@ -130,7 +130,7 @@ class Page_step4Controller extends Page_mainController
     // Verifica que no haya votado
     $this->verifyResult();
     // Arreglo para almacenar los datos
-    $data = array();
+    $data = [];
 
     // Instancia del modelo de resultados
     $resultados_model = new Administracion_Model_DbTable_Resultados();
@@ -272,7 +272,7 @@ class Page_step4Controller extends Page_mainController
     $consecutivo = $ultimoRegistro->consecutivo ?? 0;
 
     // Incrementar el consecutivo si existe, de lo contrario, establecerlo en 0
-    $consecutivo = $consecutivo + 1;
+    $consecutivo++;
 
     // Devolver el consecutivo obtenido
     return $consecutivo;

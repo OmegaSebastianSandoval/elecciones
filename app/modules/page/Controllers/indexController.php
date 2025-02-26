@@ -17,6 +17,9 @@ class Page_indexController extends Page_mainController
     if (Session::getInstance()->get('user')) {
       header("Location: /page/step3");
     }
+    $this->_view->errorTarjeton = Session::getInstance()->get('error_tarjeton');
+    Session::getInstance()->set('error_tarjeton', null);
+    // Verificar si hay un error en el login  
     $this->_view->error = $this->_getSanitizedParam('error');
   }
   public function loginAction()
@@ -29,7 +32,7 @@ class Page_indexController extends Page_mainController
     $votacion = $this->_getSanitizedParam('votacion');
 
     // Arreglo para almacenar la respuesta
-    $res = array();
+    $res = [];
 
     // Modelos de base de datos
     $resultados_model = new Administracion_Model_DbTable_Resultados();
@@ -207,6 +210,8 @@ class Page_indexController extends Page_mainController
   //Cerrar sesión
   public function logoutAction()
   {
+    $error = $this->_getSanitizedParam('error');
+
     Session::getInstance()->set('user', null);
     Session::getInstance()->set('tarjeton', null);
     Session::getInstance()->set('cantidadtarjetones', null);

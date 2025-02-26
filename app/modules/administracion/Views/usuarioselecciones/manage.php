@@ -92,7 +92,7 @@
 		Swal.fire({
 			icon: "info",
 			title: "Error",
-			text: "Si el usuario ya votó no es posible cambiarle la zona",
+			text: "Si el usuario ya votó no es posible cambiarle la zona o cambiar su estado de votación",
 			confirmButtonColor: "#74bc1f",
 
 		});

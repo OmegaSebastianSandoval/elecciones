@@ -66,7 +66,7 @@
 					</label>
 					<div class="help-block with-errors"></div>
 				</div>
-				<div class="col-md-3 mb-3">
+				<div class="col-md-3 mb-3 d-none">
 					<label for="candidato_tarjeton" class="form-label">Tarjeton</label>
 					<label class="input-group">
 						<span class="input-group-text input-icono"><i class="fas fa-pencil-alt"></i></span>
@@ -82,7 +82,7 @@
 					</label>
 					<div class="help-block with-errors"></div>
 				</div>
-				<div class="col-12 col-md-4 mb-3">
+				<div class="col-12 col-md-3 mb-3">
 					<label for="foto">Foto</label>
 					<input type="file" name="foto" id="foto" class="form-control  file-image" data-buttonName="btn-primary" accept="image/gif, image/jpg, image/jpeg, image/png">
 					<div class="help-block with-errors"></div>

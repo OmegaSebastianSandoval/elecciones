@@ -144,7 +144,7 @@ class Administracion_usuarioseleccionesController extends Administracion_mainCon
 
 		$filters = "";
 		$this->_view->filters = $filters;
-		$filters = $this->getFilter();
+		// $filters = $this->getFilter();
 		$order = "id DESC";
 		$list =  $eleccionesModel->getList($filters, $order);
 		$amount = $this->pages;
@@ -164,7 +164,8 @@ class Administracion_usuarioseleccionesController extends Administracion_mainCon
 		$this->_view->pages = $this->pages;
 		$this->_view->totalpages = ceil(count($list) / $amount);
 		$this->_view->page = $page;
-		$this->_view->lists = $eleccionesModel->getListPages($filters, $order, $start, $amount);
+		// $this->_view->lists = $eleccionesModel->getListPages($filters, $order, $start, $amount);
+		$this->_view->lists = $list;
 		$this->_view->csrf_section = $this->_csrf_section;
 	}
 
@@ -250,6 +251,21 @@ class Administracion_usuarioseleccionesController extends Administracion_mainCon
 
 				$data['votacion'] =  $this->_getSanitizedParam("votacion");
 
+				if($content->estado==1 && $data["estado"]==0){
+					$data2 = [];
+					$data2['cedula'] = $data["cedula"];
+					$data2['valor_anterior'] = $content->estado;
+					$data2['valor_nuevo'] = $data["estado"];
+					$data2['fecha'] = date("Y-m-d H:i:s");
+					$data2['quien'] = Session::getInstance()->get("kt_login_user");
+					$logCambiosModel = new Administracion_Model_DbTable_Logcambios();
+					$logCambiosModel->insert($data2);
+
+					header("Location: {$this->route}/manage?id=$id&error=2&votacion=".$data['votacion']);
+					return;
+
+				}
+
 				if ($content->estado == 1 && ($content->zona != $data["zona"])) {
 
 					$data["zona"] = $content->zona;
@@ -265,7 +281,9 @@ class Administracion_usuarioseleccionesController extends Administracion_mainCon
 
 
 
-					header('Location: ' . $this->route . '/manage?id=' . $id . '&error=2');
+					header("Location: {$this->route}/manage?id=$id&error=2&votacion=".$data['votacion']);
+					return;
+
 				} else {
 					if ($content->zona != $data["zona"]) {
 						$data2 = [];
@@ -329,7 +347,7 @@ class Administracion_usuarioseleccionesController extends Administracion_mainCon
 		if ($excel == 1) {
 			header("Content-Type:   application/vnd.ms-excel; charset=utf-8");
 			header("Content-type:   application/x-msexcel; charset=utf-8");
-			header("Content-Disposition: attachment; filename=cambios" . $hoy . ".xls");
+			header("Content-Disposition: attachment; filename=cambios$hoy.xls");
 		}
 	}
 
@@ -364,8 +382,7 @@ class Administracion_usuarioseleccionesController extends Administracion_mainCon
 		$this->_view->list = $list;
 		$this->_view->csrf_section = $this->_csrf_section;
 		$this->_view->list_zona = $this->getZona($this->votacion);
-		print_r($this->_view->list_zona);
-		print_r($this->_view->list);
+
 
 
 		$hoy = date("YmdHis");
@@ -374,7 +391,7 @@ class Administracion_usuarioseleccionesController extends Administracion_mainCon
 		if ($excel == 1) {
 			header("Content-Type:   application/vnd.ms-excel; charset=utf-8");
 			header("Content-type:   application/x-msexcel; charset=utf-8");
-			header("Content-Disposition: attachment; filename=usuarioselecciones" . $hoy . ".xls");
+			header("Content-Disposition: attachment; filename=usuarioselecciones$hoy.xls");
 		}
 	}
 
@@ -412,7 +429,8 @@ class Administracion_usuarioseleccionesController extends Administracion_mainCon
 		$this->_view->pages = $this->pages;
 		$this->_view->totalpages = ceil(count($list) / $amount);
 		$this->_view->page = $page;
-		$this->_view->lists = $eleccionesModel->getListPages($filters, $order, $start, $amount);
+		// $this->_view->lists = $eleccionesModel->getListPages($filters, $order, $start, $amount);
+		$this->_view->lists = $list;
 
 		$this->_view->csrf_section = $this->_csrf_section;
 	}
@@ -451,7 +469,7 @@ class Administracion_usuarioseleccionesController extends Administracion_mainCon
 
 		if ($campoinicial == 0 || $campoinicial == '' || $campoinicial == null) {
 			Session::getInstance()->set('usuariosUpdate', []);
-			$usuarios = $this->mainModel->getList("votacion = " . $votacion);
+			$usuarios = $this->mainModel->getList("votacion = $votacion");
 			Session::getInstance()->set('usuarios', $usuarios);
 		} else {
 			$usuarios = Session::getInstance()->get('usuarios');
@@ -497,11 +515,11 @@ class Administracion_usuarioseleccionesController extends Administracion_mainCon
 			// Última iteración: Limpia la sesión y redirige
 			Session::getInstance()->set('usuarios', []);
 			// Session::getInstance()->set('usuariosUpdate', []);
-			header('Location: ' . $this->route . '/generarclaves?mostrar=1' . '&votacion=' . $votacion);
+			header("Location: {$this->route}/generarclaves?mostrar=1&votacion=$votacion");
 			exit;
 		}
 
-		header('Location: ' . $this->route . '/generar?inicio=' . $campofinal . '&votacion=' . $votacion);
+		header("Location: {$this->route}/generar?inicio=$campofinal&votacion=$votacion");
 		exit;
 	}
 

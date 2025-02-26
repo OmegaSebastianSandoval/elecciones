@@ -7,18 +7,18 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
     <style>
         * {
-            font-family: 'Roboto';
+            font-family: 'Alegreya Sans', sans-serif;
         }
     </style>
 </head>
 <body style="font-family: Arial, sans-serif; background-color: #f0f4f8; padding: 20px;">
     <div style="max-width: 750px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); overflow: hidden;">
-        <div style="background-color: #2377ba; color: #ffffff; padding: 16px; display: flex; align-items: center;">
+        <div style="background-color: #af1c30; color: #ffffff; padding: 16px; display: flex; align-items: center;">
             <h4 style="margin: 0; font-size: 20px;"><?php echo 'Certificado de votación N° ' . $this->resultados->consecutivo ?></h4>
         </div>
         <div style="padding: 24px;padding-top: 10px">
             <p style="font-size: 16px; margin-bottom: 14px;color: #0d3a58;">Cordial Saludo,</p>
-            <div style="background-color: #2377ba; padding: 16px; border-radius: 8px; display: flex; align-items: center;">
+            <div style="background-color: #af1c30; padding: 16px; border-radius: 8px; display: flex; align-items: center;">
                 <div style="flex-grow: 1;">
                     <p style="margin: 0; font-size: 15px; color: white;font-weight: 400;">
                       Hola, <?php echo $this->user_info->nombre ?><br>

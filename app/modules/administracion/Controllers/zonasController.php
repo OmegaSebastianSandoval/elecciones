@@ -128,7 +128,7 @@ class Administracion_zonasController extends Administracion_mainController
 
 		$filters = "";
 		$this->_view->filters = $filters;
-		$filters = $this->getFilter();
+		// $filters = $this->getFilter();
 		$order = "id DESC";
 		$list =  $eleccionesModel->getList($filters, $order);
 		$amount = $this->pages;
@@ -148,7 +148,8 @@ class Administracion_zonasController extends Administracion_mainController
 		$this->_view->pages = $this->pages;
 		$this->_view->totalpages = ceil(count($list) / $amount);
 		$this->_view->page = $page;
-		$this->_view->lists = $eleccionesModel->getListPages($filters, $order, $start, $amount);
+		// $this->_view->lists = $eleccionesModel->getListPages($filters, $order, $start, $amount);
+		$this->_view->lists = $list;
 		$this->_view->csrf_section = $this->_csrf_section;
 	}
 

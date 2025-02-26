@@ -25,6 +25,7 @@ class Page_step3Controller extends Page_mainController
     $config_model = new Administracion_Model_DbTable_Configvotacion();
     $tarjetones_model = new Administracion_Model_DbTable_Tarjetones();
     $zonas_model = new Administracion_Model_DbTable_Zonas();
+    $candidatosModel = new Administracion_Model_DbTable_Candidatos();
 
     // Obtiene la configuración de votación por defecto
     // $configVotacion = $config_model->getById(1);
@@ -41,6 +42,27 @@ class Page_step3Controller extends Page_mainController
       " tarjeton_elecciones = '$configVotacion->id' AND tarjeton_estado = '1' ",
       "orden ASC"
     );
+
+
+    $user = Session::getInstance()->get('user');
+    $zonaUser = $user->zona;
+
+    //validar que en todos los tarjetones hayan candidatos
+    foreach ($tarjetones as $tarjeton) {
+      $tarjetonFiltroPorZona = $tarjeton->tarjeton_zona;
+      if ($tarjetonFiltroPorZona == 1) {
+        $existenCandidatos = $candidatosModel->getList("candidato_tarjeton = '$tarjeton->tarjeton_id' AND zona = '$zonaUser'");
+      } else {
+        $existenCandidatos = $candidatosModel->getList("candidato_tarjeton = '$tarjeton->tarjeton_id'");
+      }
+
+      // Si no hay candidatos en este tarjetón, redirigir al login con error
+      if (empty($existenCandidatos)) {
+        Session::getInstance()->set('error_tarjeton', "No hay candidatos en el tarjetón {$tarjeton->tarjeton_nombre}, por favor contacte al administrador.");
+        header("Location: /page/index/logout");
+        exit;
+      }
+    }
 
 
     if (count($tarjetones) >= 1) {

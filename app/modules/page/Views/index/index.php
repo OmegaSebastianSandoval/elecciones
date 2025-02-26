@@ -84,7 +84,7 @@
         icon: 'info',
         text: 'Señor asociado, usted ya ha dado su voto.',
         confirmButtonText: 'Aceptar',
-        confirmButtonColor: '#ec008c'
+        confirmButtonColor: '#af1c30'
       })
     })
   </script>
@@ -97,11 +97,25 @@
         icon: 'info',
         text: 'Señor asociado, las votaciones han finalizado.',
         confirmButtonText: 'Aceptar',
-        confirmButtonColor: '#ec008c'
+        confirmButtonColor: '#af1c30'
       })
     })
   </script>
 <?php } ?>
+
+<?php if ($this->errorTarjeton) { ?>
+  <script>
+    $(document).ready(function() {
+      Swal.fire({
+        icon: 'error',
+        text: '<?= $this->errorTarjeton ?>',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: '#af1c30'
+      })
+    })
+  </script>
+<?php } ?>
+
 <style>
   nav .nav-brand {
 

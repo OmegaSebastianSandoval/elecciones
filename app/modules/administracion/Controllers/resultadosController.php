@@ -112,7 +112,7 @@ class Administracion_resultadosController extends Administracion_mainController
 		$title = "Administración de Resultados";
 		$this->getLayout()->setTitle($title);
 		$this->_view->titlesection = $title;
-		$this->filters();
+		// $this->filters();
 		$this->_view->csrf = Session::getInstance()->get('csrf')[$this->_csrf_section];
 		$filters = (object)Session::getInstance()->get($this->namefilter);
 		$this->_view->filters = $filters;
@@ -137,7 +137,8 @@ class Administracion_resultadosController extends Administracion_mainController
 		$this->_view->pages = $this->pages;
 		$this->_view->totalpages = ceil(count($list) / $amount);
 		$this->_view->page = $page;
-		$this->_view->lists = $eleccionesModel->getListPages($filters, $order, $start, $amount);
+		// $this->_view->lists = $eleccionesModel->getListPages($filters, $order, $start, $amount);
+		$this->_view->lists = $list;
 		$this->_view->csrf_section = $this->_csrf_section;
 	}
 
