@@ -2,6 +2,8 @@ $(document).ready(function () {
   $("#saveSelectionMultiple").on("submit", function (e) {
     // Deshabilitar el botón de submit al enviar el formulario
     $("#btn-select").prop("disabled", true);
+    $("#btn-back-resume").prop("disabled", true);
+    
   });
 
   /*   $("#selectCandidateMultiple").on("submit", function (e) {

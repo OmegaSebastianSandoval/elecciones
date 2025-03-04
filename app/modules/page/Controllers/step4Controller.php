@@ -147,7 +147,7 @@ class Page_step4Controller extends Page_mainController
 
     if (!$verify_resultados) {
       $resumen = Session::getInstance()->get('resumen');
-      $data['consecutivo'] = $this->getConsecutivo($votacionId );
+      $data['consecutivo'] = $this->getConsecutivo($votacionId);
 
       foreach ($resumen as $tarjetonId => $candidatosIds) {
 
@@ -186,7 +186,7 @@ class Page_step4Controller extends Page_mainController
 
     if ($resEmail == 1) {
       $res['status'] = 'ok';
-     header('Location: /page/step5/?res=' . $res['status']);
+      header('Location: /page/step5/?res=' . $res['status']);
       return;
     }
 

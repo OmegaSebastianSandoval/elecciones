@@ -90,9 +90,9 @@
               <thead>
                 <tr>
                   <?php
-                  $colspan = 3 + ( $tarjeton['tarjeton']->tarjeton_mostrar_suplente == 1) + ( $tarjeton['tarjeton']->tarjeton_mostrar_detalle == 1);
+                  $colspan = 3 + ($tarjeton['tarjeton']->tarjeton_mostrar_suplente == 1) + ($tarjeton['tarjeton']->tarjeton_mostrar_detalle == 1);
                   ?>
-                  
+
                   <th colspan="<?php echo $colspan ?>" class="table-title">
 
 
@@ -160,7 +160,7 @@
 
         <div class="col-12 mt-4">
           <div class="d-flex justify-content-center gap-5">
-            <a class="button back" href="/page/step3" style="">
+            <a class="button back" href="/page/step3" id="btn-back-resume" style="">
 
               <div class="text">
                 Volver
