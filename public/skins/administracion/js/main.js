@@ -236,7 +236,7 @@ $(document).ready(function () {
     maxFileSize: 10000,
     previewFileType: "image",
     allowedFileExtensions: ["jpg", "jpeg", "gif", "png", "ico", "webp"],
-    browseClass: "btn  btn-verde",
+    browseClass: "btn  btn-verde rounded-end",
     showUpload: false,
     showRemove: false,
     browseIcon: '<i class="fas fa-image"></i> ',
@@ -248,7 +248,7 @@ $(document).ready(function () {
     maxFileSize: 2048,
     previewFileType: "image",
     browseLabel: "Archivo",
-    browseClass: "btn btn-guardar",
+    browseClass: "btn btn-guardar  rounded-0 rounded-end",
     allowedFileExtensions: ["pdf", "xlsx", "xls", "doc", "docx"],
     showUpload: false,
     showRemove: false,
@@ -284,7 +284,7 @@ $(document).ready(function () {
     dropZoneEnabled: false,
     showPreview: false,
   });
-  $('[data-toggle="tooltip"]').tooltip();
+  $('[data-bs-tooltip="tooltip"]').tooltip();
   $(".up_table,.down_table").click(function () {
     var row = $(this).parents("tr:first");
     var value = row.find("input").val();
@@ -518,3 +518,25 @@ $(document).ready(function() {
       }
   });
 }); */
+document.addEventListener("DOMContentLoaded", function () {
+  const inputVotacionZona = document.getElementById("votacion-zona");
+
+  const buttonsZona = document.querySelectorAll(".btn-zonas");
+  buttonsZona.forEach((btnZona) => {
+    btnZona.addEventListener("click", function () {
+      console.log(btnZona.getAttribute("data-votacion"));
+      inputVotacionZona.value = btnZona.getAttribute("data-votacion");
+    });
+  });
+
+  const modalZona = document.getElementById("modalZona");
+  modalZona?.addEventListener("hidden.bs.modal", (event) => {
+    inputVotacionZona.value = "";
+  });
+
+  const modalCrear = document.getElementById("modalCrear");
+
+  const myModal = new bootstrap.Modal('#modalCrear', {
+    show:true
+  })
+});

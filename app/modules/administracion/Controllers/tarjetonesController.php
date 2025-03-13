@@ -262,49 +262,54 @@ class Administracion_tarjetonesController extends Administracion_mainController
 		$this->deleteVotosBlanco($votacion, $tarjeton);
 		$candidatosModel = new Administracion_Model_DbTable_Candidatos();
 		$zonasModel = new Administracion_Model_DbTable_Zonas();
-		$zonas = $zonasModel->getList("votacion = '$votacion'", "");
-
-		$candidatos = $candidatosModel->getList("candidato_tarjeton = '$tarjeton' AND votacion = '$votacion'", "");
-
-		$numerosCandidatos = [];
-		foreach ($candidatos as $candidato) {
-			$numerosCandidatos[] = $candidato->numero;
+		$tarjetonesModel = new Administracion_Model_DbTable_Tarjetones();
+		$tarjetonInfo = $tarjetonesModel->getById($tarjeton);
+		if ($tarjetonInfo->tarjeton_voto_blanco == 1) {
+    		$zonas = $zonasModel->getList("votacion = '$votacion'", "");
+    
+    		$candidatos = $candidatosModel->getList("candidato_tarjeton = '$tarjeton' AND votacion = '$votacion'", "");
+    
+    		$numerosCandidatos = [];
+    		foreach ($candidatos as $candidato) {
+    			$numerosCandidatos[] = $candidato->numero;
+    		}
+    
+    		$numeroParaVotoBlanco = $numeroParaVotoBlanco = (empty($numerosCandidatos)) ? 1 : (max($numerosCandidatos) + 1);
+    
+    		switch ($filtroZona) {
+    			case '1':
+    				foreach ($zonas as $zona) {
+    					$data['numero'] = $numeroParaVotoBlanco;
+    					$data['nombre'] = 'VOTO EN BLANCO';
+    					$data['suplente'] = '';
+    					$data['zona'] = $zona->id;
+    					$data['detalle'] = 'VOTO EN BLANCO';
+    					$data['candidato_tarjeton'] = $tarjeton;
+    					$data['votacion'] = $votacion;
+    					$data['cedula'] = '';
+    					$data['foto'] = '';
+    					$data['lista'] = '';
+    					$candidatosModel->insert($data);
+    					$numeroParaVotoBlanco++;
+    				}
+    				break;
+    
+    			case '0':
+    				$data['numero'] = $numeroParaVotoBlanco;
+    				$data['nombre'] = 'VOTO EN BLANCO';
+    				$data['suplente'] = '';
+    				$data['zona'] = 0;
+    				$data['detalle'] = 'VOTO EN BLANCO';
+    				$data['candidato_tarjeton'] = $tarjeton;
+    				$data['votacion'] = $votacion;
+    				$data['cedula'] = '';
+    				$data['foto'] = '';
+    				$data['lista'] = '';
+    				$candidatosModel->insert($data);
+    				break;
+    		}
 		}
 
-		$numeroParaVotoBlanco = $numeroParaVotoBlanco = (empty($numerosCandidatos)) ? 1 : (max($numerosCandidatos) + 1);
-
-		switch ($filtroZona) {
-			case '1':
-				foreach ($zonas as $zona) {
-					$data['numero'] = $numeroParaVotoBlanco;
-					$data['nombre'] = 'VOTO EN BLANCO';
-					$data['suplente'] = '';
-					$data['zona'] = $zona->id;
-					$data['detalle'] = 'VOTO EN BLANCO';
-					$data['candidato_tarjeton'] = $tarjeton;
-					$data['votacion'] = $votacion;
-					$data['cedula'] = '';
-					$data['foto'] = '';
-					$data['lista'] = '';
-					$candidatosModel->insert($data);
-					$numeroParaVotoBlanco++;
-				}
-				break;
-
-			case '0':
-				$data['numero'] = $numeroParaVotoBlanco;
-				$data['nombre'] = 'VOTO EN BLANCO';
-				$data['suplente'] = '';
-				$data['zona'] = 0;
-				$data['detalle'] = 'VOTO EN BLANCO';
-				$data['candidato_tarjeton'] = $tarjeton;
-				$data['votacion'] = $votacion;
-				$data['cedula'] = '';
-				$data['foto'] = '';
-				$data['lista'] = '';
-				$candidatosModel->insert($data);
-				break;
-		}
 	}
 
 
@@ -360,7 +365,7 @@ class Administracion_tarjetonesController extends Administracion_mainController
 			$data['numero'] = trim($fila['A']);
 			$data['nombre'] = trim($fila['B']);
 			$data['suplente'] = trim($fila['C']);
-			$data['zona'] =  $zonas[$fila['D']] ?? null;
+		    $data['zona'] =  $zonas[trim($fila['D'])] ?? null;
 			// $data['zona'] = trim($fila['D']);
 			$data['detalle'] = trim($fila['E']);
 			// $data['candidato_tarjeton'] = trim($fila['F']);

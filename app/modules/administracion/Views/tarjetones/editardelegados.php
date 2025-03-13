@@ -9,7 +9,7 @@
 			<?php } ?>
 			<div class="row">
 				<div class="col-12 text-end mb-3" align="right">
-					<a href="/skins/page/files/ejemplocandidatos.xlsx" class="custom-btn-home me-2">
+					<a href="/skins/page/files/candidatosejemplo.xlsx" class="custom-btn-home me-2">
 						<span class="add-button-home lf-part">Descargar archivo de ejemplo</span>
 						<span class="rg-part"><i class="fas fa-plus"></i></span>
 					</a>

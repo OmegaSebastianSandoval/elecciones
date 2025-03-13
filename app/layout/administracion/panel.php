@@ -6,27 +6,33 @@
   <title>
     <?= $this->_titlepage ?>
   </title>
-    <!-- Jquery -->
-    <script src="/components/jquery/jquery-3.6.0.min.js"></script>
+
+  <!-- Jquery -->
+  <script src="/components/jquery/jquery-3.6.0.min.js"></script>
+
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBWYVxdF4VwIPfmB65X2kMt342GbUXApwQ&sensor=true">
   </script>
+
   <!-- Bootstrap CSS -->
-
-  <link rel="stylesheet" href="/components/bootstrap-5.3/css/bootstrap.min.css">
-
-  <link href='https://fonts.googleapis.com/css?family=Arizonia' rel='stylesheet' type='text/css'>
-  <link href='https://fonts.googleapis.com/css?family=Great+Vibes' rel='stylesheet' type='text/css'>
-  <link href="https://fonts.googleapis.com/css2?family=Euphoria+Script&family=Homemade+Apple&family=Miss+Fajardose&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/components/bootstrap-5.3.3/css/bootstrap.min.css">
   <link rel="stylesheet" href="/components/bootstrap-datepicker/dist/css/bootstrap-datepicker3.standalone.min.css">
   <link rel="stylesheet" href="/components/bootstrap-fileinput/css/fileinput.css">
-  <!-- SweetAlert -->
-  <script src="/components/sweetalert/sweetalert.js"></script>
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="/components/Font-Awesome/css/all.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <link href="/components/bootstrap-toggle/css/bootstrap-toggle.min.css" rel="stylesheet">
   <link href="/components/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css" rel="stylesheet">
   <link rel="stylesheet" href="/skins/administracion/css/global.css?v=1.054">
+
+  <!-- SweetAlert -->
+  <script src="/components/sweetalert/sweetalert.js"></script>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/components/Font-Awesome/css/all.css">
+  
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"> -->
+
+  <!-- Bootstrap Js -->
+  <script src="/components/bootstrap-5.3.3/js/bootstrap.bundle.min.js"></script>
+
+
   <script type="text/javascript">
     var map;
     var longitude = 0;
@@ -68,11 +74,7 @@
   </script>
 
 
-  <!-- Jquery -->
-  <script src="/components/jquery/jquery-3.6.0.min.js"></script>
-  <script src="/scripts/popper.min.js"></script>
-  <!-- Bootstrap Js -->
-  <script src="/components/bootstrap-5.3/js/bootstrap.min.js"></script>
+
 
   <script src="/components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
   <script src="/components/bootstrap-datepicker/dist/locales/bootstrap-datepicker.es.min.js"></script>
@@ -88,6 +90,7 @@
 
 <body>
   <header>
+    
     <div class="container-fluid">
       <div class="row align-items-center">
         <div class="col-4">
@@ -104,7 +107,7 @@
   </header>
   <div class="container-fluid">
     <div class="row p-0" style="padding-right: 3px; padding-left: 3px;">
-      <nav id="panel-botones">
+      <nav id="panel-botones" class="navbar">
         <?= $this->_data['panel_botones']; ?>
       </nav>
       <article id="contenido_panel" class="col-12">

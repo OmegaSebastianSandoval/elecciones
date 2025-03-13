@@ -73,7 +73,7 @@ class Administracion_configloginController extends Administracion_mainController
      */
 	public function indexAction()
 	{
-		$title = "Administración de configlogin";
+		$title = "Administración del login de votaciones";
 		$this->getLayout()->setTitle($title);
 		$this->_view->titlesection = $title;
 		$this->filters();

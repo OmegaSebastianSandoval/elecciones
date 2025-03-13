@@ -50,7 +50,7 @@ spl_autoload_register('framework_autoload');
 
 include(APP_PATH . '/../vendor/autoload.php');
 $env = "development";
-if (strpos($_SERVER['HTTP_HOST'], "xovis.omegasolucionesweb.com") !== false) {
+if (strpos($_SERVER['HTTP_HOST'], "fodun.eleccionesows.com") !== false) {
   $env = "staging";
 } else if (strpos($_SERVER['HTTP_HOST'], "eleccionesfeincol") !== false) {
   $env = "production";

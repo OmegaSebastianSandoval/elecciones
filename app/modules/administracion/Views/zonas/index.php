@@ -94,6 +94,7 @@
 			<table class=" table table-striped  table-hover table-administrator text-left">
 				<thead>
 					<tr>
+					    <td>ZonaID</td>
 						<td>Zona</td>
 						<td>Elegidos</td>
 						<td width="100"></td>
@@ -103,6 +104,7 @@
 					<?php foreach ($this->lists as $content) { ?>
 						<?php $id =  $content->id; ?>
 						<tr>
+						    <td><?= $content->id; ?></td>
 							<td><?= $content->zona; ?></td>
 							<td><?= $content->elegidos; ?></td>
 

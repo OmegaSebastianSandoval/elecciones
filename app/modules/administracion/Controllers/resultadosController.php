@@ -7,6 +7,7 @@ class Administracion_resultadosController extends Administracion_mainController
 {
 
 	public $botonpanel = 11;
+	public $votacionActiva;
 
 	/**
 	 * $mainModel  instancia del modelo de  base de datos Resultados
@@ -64,7 +65,11 @@ class Administracion_resultadosController extends Administracion_mainController
 		} else {
 			$this->pages = 20;
 		}
+		$votacionActiva = $this->_getSanitizedParam("votacion");
+		$this->votacionActiva = $votacionActiva;
+		$this->_view->votacionActiva = $votacionActiva;
 		parent::init();
+
 	}
 
 
