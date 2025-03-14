@@ -75,9 +75,14 @@
 		</ul>
 	</div>
 	<div class="content-dashboard">
-		<?php if ($this->votacion) { ?>
+		<?php if ($this->votacion && !$this->origin) { ?>
 			<a href="/administracion/usuarioselecciones/elecciones?page=1&cleanfilter=1" class="btn btn-success mb-3 d-flex align-items-center gap-2 w-fit"> <i class="fa-solid fa-arrow-left"></i> Volver</a>
 		<?php } ?>
+
+		<?php if ($this->votacion && $this->origin) { ?>
+			<a href="/administracion/configvotacion?page=1" class="btn btn-success mb-3 d-flex align-items-center gap-2 w-fit"> <i class="fa-solid fa-arrow-left"></i> Volver</a>
+		<?php } ?>
+
 		<div class="franja-paginas mb-3">
 			<div class="row align-items-center">
 				<div class="col-4">

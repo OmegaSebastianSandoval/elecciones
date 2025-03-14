@@ -519,12 +519,11 @@ $(document).ready(function() {
   });
 }); */
 document.addEventListener("DOMContentLoaded", function () {
-  const inputVotacionZona = document.getElementById("votacion-zona");
 
+  const inputVotacionZona = document.getElementById("votacion-zona");
   const buttonsZona = document.querySelectorAll(".btn-zonas");
   buttonsZona.forEach((btnZona) => {
     btnZona.addEventListener("click", function () {
-      console.log(btnZona.getAttribute("data-votacion"));
       inputVotacionZona.value = btnZona.getAttribute("data-votacion");
     });
   });
@@ -532,11 +531,45 @@ document.addEventListener("DOMContentLoaded", function () {
   const modalZona = document.getElementById("modalZona");
   modalZona?.addEventListener("hidden.bs.modal", (event) => {
     inputVotacionZona.value = "";
+    $("#archivo").fileinput("clear");
   });
 
-  const modalCrear = document.getElementById("modalCrear");
 
-  const myModal = new bootstrap.Modal('#modalCrear', {
-    show:true
-  })
+
+
+
+  const inputVotacionUsuarios = document.getElementById("votacion-usuarios");
+  const buttonsUsuarios = document.querySelectorAll(".btn-usuarios");
+  buttonsUsuarios.forEach((btnUsuario) => {
+    btnUsuario.addEventListener("click", function () {
+      inputVotacionUsuarios.value = btnUsuario.getAttribute("data-votacion");
+    });
+  });
+
+  const modalUsuarios = document.getElementById("modalUsuarios");
+  modalUsuarios?.addEventListener("hidden.bs.modal", (event) => {
+    inputVotacionUsuarios.value = "";
+    $("#archivo2").fileinput("clear");
+  });
+
+
+
+  const inputVotacionTarjeton = document.getElementById("votacion-tarjeton");
+  const buttonsTarjetones = document.querySelectorAll(".btn-tarjetones");
+  buttonsTarjetones.forEach((btnUsuario) => {
+    btnUsuario.addEventListener("click", function () {
+      inputVotacionTarjeton.value = btnUsuario.getAttribute("data-votacion");
+    });
+  });
+
+  const modalTarjeton = document.getElementById("modalTarjeton");
+  modalTarjeton?.addEventListener("hidden.bs.modal", (event) => {
+    inputVotacionTarjeton.value = "";
+    $("#archivo2").fileinput("clear");
+  });
+
+
+
+
+
 });

@@ -80,10 +80,12 @@ class Administracion_zonasController extends Administracion_mainController
 	public function indexAction()
 	{
 		$votacion = $this->_getSanitizedParam("votacion");
+		$origin = $this->_getSanitizedParam("origin");
 		if (!$votacion) {
 			header('Location: /administracion/zonas/elecciones');
 		}
 		$this->_view->votacion = $votacion;
+		$this->_view->origin = $origin;
 		$title = "Administración de Zonas";
 		$this->getLayout()->setTitle($title);
 		$this->_view->titlesection = $title;

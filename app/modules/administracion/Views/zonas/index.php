@@ -53,13 +53,16 @@
 					echo '<li class="page-item"><a class="page-link" href="' . $url . '?page=' . ($this->page + 1) . '&' . $queryParams . '">Siguiente &raquo;</a></li>';
 				}
 			}
-			
+
 			?>
 		</ul>
 	</div>
 	<div class="content-dashboard">
-		<?php if ($this->votacion) { ?>
+		<?php if ($this->votacion && !$this->origin) { ?>
 			<a href="/administracion/zonas/elecciones?page=1" class="btn btn-success mb-3 d-flex align-items-center gap-2 w-fit"> <i class="fa-solid fa-arrow-left"></i> Volver</a>
+		<?php } ?>
+		<?php if ($this->votacion && $this->origin) { ?>
+			<a href="/administracion/configvotacion?page=1" class="btn btn-success mb-3 d-flex align-items-center gap-2 w-fit"> <i class="fa-solid fa-arrow-left"></i> Volver</a>
 		<?php } ?>
 		<div class="franja-paginas mb-3">
 			<div class="row">
@@ -86,7 +89,7 @@
 					</select>
 				</div>
 				<div class="col-3">
-					<div class="text-right"><a class="btn btn-sm btn-success" href="<?php echo $this->route . "\manage?votacion=".$this->votacion; ?>"> <i class="fas fa-plus-square"></i> Crear Nuevo</a></div>
+					<div class="text-right"><a class="btn btn-sm btn-success" href="<?php echo $this->route . "\manage?votacion=" . $this->votacion; ?>"> <i class="fas fa-plus-square"></i> Crear Nuevo</a></div>
 				</div>
 			</div>
 		</div>
@@ -94,7 +97,7 @@
 			<table class=" table table-striped  table-hover table-administrator text-left">
 				<thead>
 					<tr>
-					    <td>ZonaID</td>
+						<td>ZonaID</td>
 						<td>Zona</td>
 						<td>Elegidos</td>
 						<td width="100"></td>
@@ -104,7 +107,7 @@
 					<?php foreach ($this->lists as $content) { ?>
 						<?php $id =  $content->id; ?>
 						<tr>
-						    <td><?= $content->id; ?></td>
+							<td><?= $content->id; ?></td>
 							<td><?= $content->zona; ?></td>
 							<td><?= $content->elegidos; ?></td>
 
@@ -170,7 +173,7 @@
 				}
 			}
 			?>
-	
+
 		</ul>
 	</div>
 </div>

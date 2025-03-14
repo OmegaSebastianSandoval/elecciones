@@ -94,10 +94,12 @@ class Administracion_usuarioseleccionesController extends Administracion_mainCon
 	public function indexAction()
 	{
 		$votacion = $this->_getSanitizedParam("votacion");
+		$origin = $this->_getSanitizedParam("origin");
 		if (!$votacion) {
 			header('Location: /administracion/usuarioselecciones/elecciones');
 		}
 		$this->_view->votacion = $votacion;
+		$this->_view->origin = $origin;
 		$title = "Administración de Usuarios Elecciones";
 		$this->getLayout()->setTitle($title);
 		$this->_view->titlesection = $title;

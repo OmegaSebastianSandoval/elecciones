@@ -554,18 +554,18 @@ class Administracion_configvotacionController extends Administracion_mainControl
     $total = count($infoExcel);
     $campoinicial = intval($campoinicial);
     if ($campoinicial + 100 >= $total) {
-			$campofinal = $total;
-		} else {
-			$campofinal = $campoinicial + 100;
-		}
-   
+      $campofinal = $total;
+    } else {
+      $campofinal = $campoinicial + 100;
+    }
+
 
     $this->_view->campoinicial = $campoinicial;
     $this->_view->campofinal = $campofinal;
 
     $zonas = $this->getZonasByName($votacion);
     $usuariosModel = new Administracion_Model_DbTable_Usuarioselecciones();
-    echo "campoinicial: $campoinicial, campofinal: $campofinal, total: $total <br>";
+    /*  echo "campoinicial: $campoinicial, campofinal: $campofinal, total: $total <br>"; */
 
     for ($i = $campoinicial; $i <= $campofinal; $i++) {
       $fila = $infoExcel[$i];
@@ -609,7 +609,7 @@ class Administracion_configvotacionController extends Administracion_mainControl
       if (
         count($usuarioExistCedula) > 0
       ) {
-       /*  echo "<pre>";
+        /*  echo "<pre>";
         print_r($usuarioExistCedula);
         echo "</pre>";
 
@@ -667,6 +667,176 @@ class Administracion_configvotacionController extends Administracion_mainControl
       header('Location: /administracion/configvotacion');
     }
     exit; */
+  }
+  public function updateusuariosjsAction()
+  {
+    // error_reporting(E_ALL);
+    $this->setLayout('blanco');
+
+    $uploadDocument = new Core_Model_Upload_Document();
+    $campoinicial = $this->_getSanitizedParam("inicio") ?? 0;
+    $this->_view->votacion = $votacion = $this->_getSanitizedParam("votacion");
+
+
+    if (!empty($_FILES['archivo2']['name']) && ($campoinicial == 0 || $campoinicial == null || $campoinicial == '')) {
+
+      $archivo = $uploadDocument->upload("archivo2");
+      $inputFileName = FILE_PATH . $archivo;
+      Session::getInstance()->set("inputFileName", $inputFileName);
+      $arrayErrors = [];
+
+      $arrayErrorsWarning = [];
+
+      $sessionErrors = Session::getInstance()->get('errors');
+
+      // Asegurarse de que siempre sea un array
+      $sessionErrors = is_array($sessionErrors) ? $sessionErrors : [];
+
+      $arrayErrors = array_merge($sessionErrors, $arrayErrors);
+      Session::getInstance()->set('errors', $arrayErrors);
+
+
+      $sessionErrorsWarning = Session::getInstance()->get('errors_warning');
+      $sessionErrorsWarning = is_array($sessionErrorsWarning) ? $sessionErrorsWarning : [];
+
+      $arrayErrorsWarning = array_merge($sessionErrorsWarning, $arrayErrorsWarning);
+      Session::getInstance()->set('errors_warning', $arrayErrorsWarning);
+
+
+      try {
+        $spreadsheet = IOFactory::load($inputFileName);
+        $infoExcel = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+        Session::getInstance()->set("infocargaexcel", $infoExcel);
+        $usuariosModel = new Administracion_Model_DbTable_Usuarioselecciones();
+        $usuariosModel->deleteAllByVotacion($votacion);
+      } catch (\Exception $e) {
+        $arrayErrors[] = "Error al leer el archivo Excel: " . $e->getMessage();
+        Session::getInstance()->set('errors', $arrayErrors);
+        header('Location: /administracion/configvotacion');
+        exit;
+      }
+    } else {
+
+      $infoExcel = Session::getInstance()->get("infocargaexcel");
+    }
+
+    if (!$infoExcel) {
+      $arrayErrors[] = "No hay datos en la sesión para procesar.";
+      Session::getInstance()->set('errors', $arrayErrors);
+      header('Location: /administracion/configvotacion');
+      exit;
+    }
+
+    $total = count($infoExcel);
+    $campoinicial = intval($campoinicial);
+    if ($campoinicial + 100 >= $total) {
+      $campofinal = $total;
+    } else {
+      $campofinal = $campoinicial + 100;
+    }
+
+
+    $this->_view->campoinicial = $campoinicial;
+    $this->_view->campofinal = $campofinal;
+
+    $zonas = $this->getZonasByName($votacion);
+    $usuariosModel = new Administracion_Model_DbTable_Usuarioselecciones();
+    /*  echo "campoinicial: $campoinicial, campofinal: $campofinal, total: $total <br>"; */
+
+    for ($i = $campoinicial; $i <= $campofinal; $i++) {
+      $fila = $infoExcel[$i];
+      $cedula = $this->cleanField(trim($fila['A']));
+      $contraseña = trim($fila['B']);
+
+      $nombre = trim($fila['C']);
+      $correo = trim($fila['D']);
+      $zona = $zonas[trim($fila['E'])] ?? null;
+      $activo = trim($fila['F']);
+      $estado = trim($fila['G']);
+
+      $celular = trim($fila['H']);
+
+      /*  if (
+        empty($cedula) ||
+        $cedula == '0'
+        ||
+         empty($correo) ||
+        $correo == '0'
+      ) {
+        continue;
+      }; */
+      if (
+        empty($cedula) ||
+        $cedula == '0'
+      ) {
+        continue;
+      };
+      /* if (empty($celular) || !preg_match('/^\d{10}$/', $celular)) {
+        $arrayErrorsWarning[] = "El usuario con cédula {$cedula} tiene un número de celular inválido.";
+      }
+ */
+
+      $usuarioExistCedula = $usuariosModel->getList("cedula = '{$cedula}' AND votacion = '{$votacion}'");
+      // $usuarioExistCorreo = $usuariosModel->getList("correo = '{$correo}' AND votacion = '{$votacion}'");
+      /* if (
+        count($usuarioExistCedula) > 0 ||
+        count($usuarioExistCorreo) > 0
+      ) */
+      if (
+        count($usuarioExistCedula) > 0
+      ) {
+
+        $arrayErrors[] = "Conflicto con cédula para el usuario {$nombre}.";
+        continue;
+      }
+
+
+
+      if ($cedula != '0' || $cedula != '' || $cedula != null) {
+        $idUserNew = $usuariosModel->insert([
+          'cedula' => $cedula,
+          'clave' => "",
+          'nombre' => $nombre,
+          'correo' => $correo,
+          'zona' => $zona,
+          'activo' => $activo,
+          'estado' => $estado,
+          'celular' => $celular,
+          'votacion' => $votacion,
+          'carga_masiva' => 1
+        ]);
+
+        if (!$idUserNew) {
+          echo "Error al insertar usuario con cédula: $cedula <br>";
+        }
+      }
+    }
+
+
+    if (!empty($arrayErrors)) {
+      Session::getInstance()->set('errors', $arrayErrors);
+      Session::getInstance()->set('errors_warning', $arrayErrorsWarning);
+    }
+
+    if ($campoinicial + 100 >= $total) {
+      $this->_view->rute = '/administracion/configvotacion?error=';
+      die(json_encode([
+        'campoinicial' => $campoinicial,
+        'campofinal' => $campofinal,
+        'total' => $total, // Devuelve el total de registros
+        'rute' => '/administracion/configvotacion?error=',
+        'votacion' => $votacion
+      ]));
+    } else {
+      $this->_view->rute = "/administracion/configvotacion/updateusuariosjs?inicio=" . ($campofinal + 1);
+      die(json_encode([
+        'campoinicial' => $campoinicial,
+        'campofinal' => $campofinal,
+        'total' => $total, // Devuelve el total de registros
+        'rute' => "/administracion/configvotacion/updateusuariosjs?inicio=" . ($campofinal + 1),
+        'votacion' => $votacion
+      ]));
+    }
   }
 
   public function updateusuariosOLDAction()
