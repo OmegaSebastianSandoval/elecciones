@@ -554,6 +554,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+
   const inputVotacionTarjeton = document.getElementById("votacion-tarjeton");
   const buttonsTarjetones = document.querySelectorAll(".btn-tarjetones");
   buttonsTarjetones.forEach((btnUsuario) => {
@@ -566,6 +567,22 @@ document.addEventListener("DOMContentLoaded", function () {
   modalTarjeton?.addEventListener("hidden.bs.modal", (event) => {
     inputVotacionTarjeton.value = "";
     $("#archivo2").fileinput("clear");
+  });
+
+
+
+  const inputTarjetonCandidato = document.getElementById("tarjeton");
+  const buttonsTarjetonesCandidatos = document.querySelectorAll(".btn-cargar-candidatos");
+  buttonsTarjetonesCandidatos.forEach((btnTarjetonCandidato) => {
+    btnTarjetonCandidato.addEventListener("click", function () {
+      inputTarjetonCandidato.value = btnTarjetonCandidato.getAttribute("data-tarjeton");
+    });
+  });
+
+  const modalCandidatos = document.getElementById("modalCandidatos");
+  modalCandidatos?.addEventListener("hidden.bs.modal", (event) => {
+    inputTarjetonCandidato.value = "";
+    $("#archivo").fileinput("clear");
   });
 
 

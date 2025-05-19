@@ -61,6 +61,22 @@ class Core_Model_Sendingemail
     }
   }
 
+  public function sendMailTest()
+  {
+  
+    $this->email->getMail()->addAddress("desarrollo8@omegawebsystems.com", "");
+    $content = $this->_view->getRoutPHP('/../app/modules/core/Views/templatesemail/test.php');
+    $this->email->getMail()->Subject = '';
+    $this->email->getMail()->msgHTML($content);
+    $this->email->getMail()->AltBody = $content;
+    // $this->email->getMail()->addBCC($informacion->info_pagina_correo_oculto);
+    if ($this->email->sed() == true) {
+      return 1;
+    } else {
+      return 2;
+    }
+  }
+
   public function sendConfirmMultipleVote($consecutivo)
   {
 

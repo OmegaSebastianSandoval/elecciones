@@ -20,7 +20,7 @@ class Core_Model_Mail
         $informacionModel = new Page_Model_DbTable_Informacion();
         $informacion = $informacionModel->getList("", "orden ASC")[0];
 
-        $this->mail = new PHPMailer;
+        /* $this->mail = new PHPMailer;
         $this->mail->CharSet = 'UTF-8';
         $this->mail->isSMTP();
         $this->mail->Host = $informacion->info_pagina_host;
@@ -31,20 +31,18 @@ class Core_Model_Mail
         $this->mail->SMTPAuth = true;
         $this->mail->Username = $informacion->info_pagina_username;
         $this->mail->Password = $informacion->info_pagina_password;
-        $this->mail->setFrom($informacion->info_pagina_correo_remitente, $informacion->info_pagina_nombre_remitente);
-        /*     $this->mail = new PHPMailer;
-    $this->mail->CharSet = 'UTF-8';
-    $this->mail->isSMTP();
-    $this->mail->SMTPDebug = 0;
-    $this->mail->SMTPSecure = "tls";
-    $this->mail->Host = "	smtp.office365.com";
-    $this->mail->Port = 587;
-    $this->mail->SMTPAuth = true;
-    $this->mail->Username = "notificaciones@fondtodos.com";
-    $this->mail->Password = "Koba2024**";
-    $this->mail->setfrom("notificaciones@fondtodos.com", "Notificaciones FONDTODOS");
-    
-     */
+        $this->mail->setFrom($informacion->info_pagina_correo_remitente, $informacion->info_pagina_nombre_remitente); */
+        $this->mail = new PHPMailer;
+        $this->mail->CharSet = 'UTF-8';
+        $this->mail->isSMTP();
+        $this->mail->SMTPDebug = 1;
+        $this->mail->SMTPSecure = "tls";
+        $this->mail->Host = "smtp.office365.com";
+        $this->mail->Port = 587;
+        $this->mail->SMTPAuth = true;
+        $this->mail->Username = "notificacionespqrfs@coasmedas.coop";
+        $this->mail->Password = 'Y$547738172867us1';
+        $this->mail->setfrom("notificacionespqrfs@coasmedas.coop", "Respuesta Web Coasmedas");
     }
     /**
      * retorna la  instancia de email

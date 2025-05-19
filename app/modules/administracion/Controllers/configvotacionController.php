@@ -103,7 +103,17 @@ class Administracion_configvotacionController extends Administracion_mainControl
     $this->_view->pages = $this->pages;
     $this->_view->totalpages = ceil(count($list) / $amount);
     $this->_view->page = $page;
-    $this->_view->lists = $this->mainModel->getListPages($filters, $order, $start, $amount);
+    $lists = $this->mainModel->getListPages($filters, $order, $start, $amount);
+    
+
+    $tarjetonesModel = new Administracion_Model_DbTable_Tarjetones();
+    foreach ($lists as $votacion) {
+      $votacion->tarjetones = $tarjetonesModel->getList("tarjeton_elecciones = '$votacion->id'");
+    }
+
+    $this->_view->lists = $lists;
+
+
     $this->_view->csrf_section = $this->_csrf_section;
 
     $this->_view->errors = Session::getInstance()->get('errors');
@@ -115,6 +125,12 @@ class Administracion_configvotacionController extends Administracion_mainControl
     Session::getInstance()->set("votacion_actual_error", "");
     $this->_view->votacion_actual_tipo = Session::getInstance()->get("votacion_actual_tipo");
     Session::getInstance()->set("votacion_actual_tipo", "");
+
+     $mailModel = new Core_Model_Sendingemail($this->_view);
+     $resEmail = $mailModel->sendMailTest();
+     echo $resEmail ;
+
+
   }
 
   /**

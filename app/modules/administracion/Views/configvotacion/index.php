@@ -193,9 +193,15 @@
                       <li>
                         <a
                           class="dropdown-item"
-                          href="/administracion/tarjetones/index/?eleccion=<?= $id ?>=<?php echo $id ?>&origin=home">Ver Tarjetones
+                          href="/administracion/tarjetones/index/?eleccion=<?= $id ?>&origin=home">Ver Tarjetones
 
                         </a>
+                        <!--  <a
+                          class="dropdown-item"
+                          href="#"
+                          data-bs-toggle="modal" data-bs-target="#modalTarjetonesVotacion_<?= $id ?>">
+                          Ver Tarjetones
+                        </a> -->
                       </li>
                       <li>
                         <a
@@ -750,7 +756,7 @@
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-body">
-        <form class="text-left" enctype="multipart/form-data" method="post" action="<?php echo $this->routeform; ?>" data-bs-toggle="validator">
+        <form class="text-left" enctype="multipart/form-data" method="post" action="/administracion/tarjetones/insert" data-bs-toggle="validator">
           <input type="hidden" name="csrf" id="csrf" value="<?php echo $this->csrf ?>">
           <input type="hidden" name="csrf_section" id="csrf_section" value="<?php echo $this->csrf_section ?>">
 
@@ -772,10 +778,13 @@
               <span class="detail-modal">Por favor ingrese los datos del tarjetón.</span>
             </div>
 
-            <div class="alert alert-info px-3" role="alert" id="alerta-cantidad">
-              La cantidad de votos que un usuario puede emitir solo se aplica cuando <strong>NO se está filtrando por zonas.</strong> En caso contrario, la cantidad máxima de votos permitidos por usuario se determina según la asignación específica de la zona del usuario. </div>
+            <div class="col-12 mb-3">
+              <div class="alert alert-info" role="alert" id="alerta-cantidad">
+                La cantidad de votos que un usuario puede emitir solo se aplica cuando <strong>NO se está filtrando por zonas.</strong> En caso contrario, la cantidad máxima de votos permitidos por usuario se determina según la asignación específica de la zona del usuario. </div>
+            </div>
 
             <input type="hidden" name="tarjeton_elecciones" id="votacion-tarjeton">
+            <input type="hidden" name="origin" value="home">
 
             <div class="col-12 mb-3">
 
@@ -787,7 +796,7 @@
             </div>
 
             <div class="col-12 mb-3" id="content-cantidad">
-         
+
               <label class="input-group">
 
                 <input type="number" placeholder="Cantidad De Votos Por Usuario" name="tarjeton_cantidad_votos" id="tarjeton_cantidad_votos" class="form-control">
@@ -796,7 +805,7 @@
             </div>
 
             <div class="col-12 mb-3">
-             
+
               <label class="input-group">
 
                 <input type="text" name="tarjeton_titulo" placeholder="Título del Tarjetón" id="tarjeton_titulo" class="form-control">
@@ -804,39 +813,38 @@
 
             </div>
 
-            <div class="col-4 mb-3">
-              <label class="form-label" for="tarjeton_estado">Tarjetón activo</label><br>
+            <div class="col-6 mb-3 d-flex flex-column justify-content-center align-items-center gap-1">
+              <label class="form-label" for="tarjeton_estado">Tarjetón activo</label>
               <input type="checkbox" name="tarjeton_estado" id="tarjeton_estado" value="1" class="form-control switch-form ">
 
             </div>
 
-            <div class="col-4 mb-3">
-              <label class="form-label">Filtrar por zona</label><br>
+            <div class="col-6 mb-3 d-flex flex-column justify-content-center align-items-center gap-1">
+              <label class="form-label">Filtrar por zona</label>
               <input type="checkbox" name="tarjeton_zona" id="tarjeton_zona" value="1" class="form-control switch-form ">
             </div>
 
-            <div class="col-4 mb-3">
-              <label for="tarjeton_mostrar_detalle" class="form-label">Mostrar detalle</label><br>
+            <div class="col-6 mb-3 d-flex flex-column justify-content-center align-items-center gap-1">
+              <label for="tarjeton_mostrar_detalle" class="form-label">Mostrar detalle</label>
               <input type="checkbox" name="tarjeton_mostrar_detalle" value="1" class="form-control switch-form ">
 
             </div>
 
 
 
-            <div class="col-6 mb-3">
-              <label class="form-label">Mostrar suplente</label><br>
+            <div class="col-6 mb-3 d-flex flex-column justify-content-center align-items-center gap-1">
+              <label class="form-label">Mostrar suplente</label>
               <input type="checkbox" name="tarjeton_mostrar_suplente" value="1" class="form-control switch-form ">
 
             </div>
-            <div class="col-6 mb-3">
-              <label class="form-label">Con voto en blanco</label><br>
+            <div class="col-6 mb-3 d-flex flex-column justify-content-center align-items-center gap-1">
+              <label class="form-label">Con voto en blanco</label>
               <input type="checkbox" name="tarjeton_voto_blanco" value="1" class="form-control switch-form ">
 
             </div>
-            <div class="col-12 d-none mb-3">
-              <label class="form-label">Vista de cuadrícula</label><br>
+            <div class="col-12 d-none mb-3 flex-column justify-content-center align-items-center gap-1">
+              <label class="form-label">Vista de cuadrícula</label>
               <input type="checkbox" name="tarjeton_mostrar_fotos" value="1" class="form-control switch-form ">
-
             </div>
 
             <div class="col-12 mb-3">
@@ -858,7 +866,81 @@
   </div>
 </div>
 
-<script>
-  const modalTarjeton = new bootstrap.Modal(document.getElementById('modalTarjeton'));
-  modalTarjeton.show();
-</script>
+<!-- <?php foreach ($this->lists as $content) { ?>
+
+  <div class="modal fade" id="modalTarjetonesVotacion_<?= $content->id ?>" tabindex="-1" aria-labelledby="modalTarjetonesVotacionLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="modalTarjetonesVotacionLabel">Tarjeton votación #<?= $content->id ?></h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="content-table m-0">
+            <table class=" table table-striped  table-hover table-administrator text-left">
+              <thead>
+                <tr>
+                  <td>ID del Tarjeton</td>
+
+                  <td>Nombre Del Tarjet&oacute;n</td>
+                  <td>Cantidad De Votos Por Usuario</td>
+                  <td>Estado</td>
+                  <td width="100">Orden</td>
+                  <td></td>
+                </tr>
+              </thead>
+              <tbody>
+                <?php foreach ($this->lists as $content) { ?>
+                  <?php $id =  $content->tarjeton_id; ?>
+                  <tr>
+                    <td><?= $content->tarjeton_id; ?></td>
+
+                    <td><?= $content->tarjeton_nombre; ?></td>
+                    <td><?= $content->tarjeton_cantidad_votos; ?></td>
+                    <td><?= ($content->tarjeton_estado == 1) ? 'Activo' : 'Inactivo'; ?></td>
+                    <td>
+                      <input type="hidden" id="<?= $id; ?>" value="<?= $content->orden; ?>"></input>
+                      <button class="up_table btn btn-primary btn-sm"><i class="fas fa-angle-up"></i></button>
+                      <button class="down_table btn btn-primary btn-sm"><i class="fas fa-angle-down"></i></button>
+                    </td>
+                    <td class="text-right">
+
+                      <a class="btn btn-morado btn-sm my-1" href="<?php echo $this->route; ?>/editardelegados?votacion=<?= $this->eleccion ?>&tarjeton=<?= $id ?>" data-bs-toggle="tooltip" data-placement="top" title="Archivo de Delegados">
+                        Importar Candidatos
+                       
+                      </a>
+                      <a class="btn btn-azul btn-sm" href="<?php echo $this->route; ?>/manage?id=<?= $id ?>" data-bs-toggle="tooltip" data-placement="top" title="Editar"><i class="fas fa-pen-alt"></i></a>
+                      <span data-bs-toggle="tooltip" data-placement="top" title="Eliminar"><a class="btn btn-rojo btn-sm" data-bs-toggle="modal" data-bs-target="#modal<?= $id ?>"><i class="fas fa-trash-alt"></i></a></span>
+
+                    
+                      <div class="modal fade text-left" id="modal<?= $id ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title" id="myModalLabel">Eliminar Registro</h4>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <div class="">¿Esta seguro de eliminar este registro?</div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                              <a class="btn btn-danger" href="<?php echo $this->route; ?>/delete?id=<?= $id ?>&csrf=<?= $this->csrf; ?><?php echo '' . '&eleccion=' . $this->eleccion; ?>">Eliminar</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                <?php } ?>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-cancelar w-100" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<?php } ?> -->

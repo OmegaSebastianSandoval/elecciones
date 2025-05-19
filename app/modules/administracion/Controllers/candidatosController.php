@@ -71,6 +71,8 @@ class Administracion_candidatosController extends Administracion_mainController
 		$tarjeton = $this->_getSanitizedParam("tarjeton");
 		$this->tarjeton = $tarjeton;
 		$this->_view->tarjeton = $tarjeton;
+		$origin = $this->_getSanitizedParam("origin");
+		$this->_view->origin = $origin;
 		parent::init();
 	}
 

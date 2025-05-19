@@ -1230,6 +1230,16 @@ thead td {
     color: #a535b5 !important;
 }
 
+.btn-morado:focus,
+.btn-morado:active,
+.btn-morado:focus-visible,
+.btn-morado:target,
+.btn-morado.show {
+    color: #fe55b5 !important;
+    border: 1px solid #fe55b5;
+}
+
+
 .btn-azul-claro {
     background: #09c2f6;
     color: #ffffff !important;
@@ -2119,16 +2129,29 @@ table .dropdown-item {
 }
 
 .dropdown-rosado,
-.dropdown-verde {
+.dropdown-verde,
+.dropdown-morado {
     padding: 0;
     overflow: hidden;
 }
+
 .dropdown-rosado li:hover a {
     background-color: #fe55b5;
     color: #FFF;
 }
+
 .dropdown-verde li:hover a {
     background-color: var(--verdeOmegaH);
     color: #FFF;
+}
 
+.dropdown-morado li:hover a {
+    background-color: #a535b5;
+    color: #FFF;
+}
+
+.file-preview-thumbnails.clearfix {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
